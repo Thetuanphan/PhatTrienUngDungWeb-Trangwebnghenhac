@@ -1,0 +1,31 @@
+.footer-section {
+	background: #9B91D9;
+	padding: 20px 0 10px;
+	bottom: 0px;
+}
+
+.footer-widget {
+	padding-top: 2px;
+}
+
+.footer-widget h2 {
+	font-size: 16px;
+	color: #fff;
+	text-transform: uppercase;
+	margin-bottom: 30px;
+}
+
+.footer-widget ul {
+	list-style: none;
+}
+
+.footer-widget ul li a {
+	display: inline-block;
+	color: #6a7080;
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+
+.content-center img{
+	margin-top: 10px !important;
+}
