@@ -1,37 +1,140 @@
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
 	<title>Login</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="SolMusic HTML Template">
 	<meta name="keywords" content="music, html">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<!-- Favicon -->
-	<link href="./img/logo/MS_64.png" rel="shorcut icon"/>
+	<link href="./img/logo/MS_64.png" rel="shorcut icon" />
 
 	<!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap" rel="stylesheet">
- 
+	<link
+		href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+		rel="stylesheet">
+
 	<!-- Stylesheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
-	<link rel="stylesheet" href="css/slicknav.min.css"/>
-	<link rel="stylesheet" href="css/header.css"/>
-	<link rel="stylesheet" href="css/footer.css"/>
-    <link rel="stylesheet" href="css/login.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/owl.carousel.min.css" />
+	<link rel="stylesheet" href="css/slicknav.min.css" />
+	<link rel="stylesheet" href="css/header.css" />
+	<link rel="stylesheet" href="css/footer.css" />
+	<link rel="stylesheet" href="css/login.css" />
 
 	<!-- Main Stylesheets -->
-	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/style.css" />
 
 
 	<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script>
+		//đăng nhập
+		function login() {
+			// lấy tài khoản mất khẩu
+			var user = document.getElementById("user").value;
+			var pass = document.getElementById("pass").value;
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					var kq = this.responseText;
+					if (kq == "true") {
+						alert("login succcess");						//window.location.href ="http://localhost/Music-Media-Website/Branch_admin/user/UserPage.html";
+					}
+					else { alert("login fail"); }
+				}
+			}
+			//send request
+			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=login&user=" + user + "&pass=" + pass, true);
+			xhttp.send();
+		}
+		function signup() {
+			// lấy tài khoản mất khẩu
+			if (check()) {
+				var user = document.getElementById("signuser").value;
+				var pass = document.getElementById("signpass").value;
+				var email = document.getElementById("user").value;
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function () {
+					if (this.readyState == 4 && this.status == 200) {
+						var kq = this.responseText;
+						alert(kq);
+					}
+				}
+				//send request
+				xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=signup&user=" + user + "&pass=" + pass + "&email=" + email, true);
+				xhttp.send();
+			}
+			else {
+				alert("đăng ký thất bại");
+			}
 
+		}
+		function check() {
+			var user = document.getElementById("signuser").value;
+			var pass = document.getElementById("signpass").value;
+			var repass = document.getElementById("repass").value;
+			var email = document.getElementById("email").value;
+			if (user == "") {
+				alert("không để trống tài khoảng");
+				return false;
+			}
+			if (pass == "") {
+				alert("không để trống mật khẩu");
+				return false;
+			} 
+			if (repass == "") {
+				alert("không để trống mật khẩu");
+				return false;
+			} 
+			if (pass != repass) {
+				alert("không trùng khớp");
+				return false;
+			}
+			if (email == "") {
+				alert("không để trống email");
+				return false;
+			}
+			if(!validateEmail(email)){
+				alert(" email không hợp lệ");
+				return false;
+			}
+			
+			else {
+				return true;
+			}
+			//http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=checkuser&username=linh
+		}
+		//kiểm tra email
+		function validateEmail(email) {
+			const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+			return re.test(email);
+		}
+		//kiểm tra tài khoảng trùng
+		function checkusername() {
+			// lấy tài khoản mất khẩu
+				var user = document.getElementById("signuser").value;
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function (ktra) {
+					if (this.readyState == 4 && this.status == 200) {
+						var kq = this.responseText;
+						if(kq=="1")
+							alert("Trùng tài khoản - xin hãy chọn một tài khoản khác");
+					}
+				}
+				//send request
+				xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=checkuser&username="+user+"", true);
+				xhttp.send();
+			}
+
+	</script>
 </head>
+
 <body>
 	<!-- Page Preloder -->
 	<div id="preloder">
@@ -41,61 +144,78 @@
 	<!-- Header section -->
 	<div class="wrapper fixed-top">
 		<header>
-		   <nav>
-			  <div class="menu-icon">
-				 <i class="fa fa-bars fa-2x"></i>
-			  </div>
-			  <div class="menu">
-				 <ul>
-					<li class="first-li"><a href="./index.html">Home</a></li>
-					<li><a href="./playlist.html">Playlist</a></li>
-					<li><a href="./contact.html">Contact</a></li>
-					<li class="last-li"><a href="./login.html">Login</a></li>
-				 </ul>
-			  </div>
-		   </nav>
+			<nav>
+				<div class="menu-icon">
+					<i class="fa fa-bars fa-2x"></i>
+				</div>
+				<div class="menu">
+					<ul>
+						<li class="first-li"><a href="./index.html">Home</a></li>
+						<li><a href="./playlist.html">Playlist</a></li>
+						<li><a href="./contact.html">Contact</a></li>
+						<li class="last-li"><a href="./login.html">Login</a></li>
+					</ul>
+				</div>
+			</nav>
 		</header>
-	 </div>
+	</div>
 	<!-- Header section end -->
 
 	<div class="row">
-        <div class="col-card">
-            <div class="card">
-                <div class="login-box">
-                    <div class="login-snip"> <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Login</label> <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
-                        <div class="login-space">
-                            <div class="login">
-                                <div class="group"> <label for="user" class="label">Username</label> <input id="user" type="text" class="input" placeholder="Enter your username"> </div>
-                                <div class="group"> <label for="pass" class="label">Password</label> <input id="pass" type="password" class="input" data-type="password" placeholder="Enter your password"> </div>
-                                <div class="group"> <input id="check" type="checkbox" class="check" checked> <label for="check"><span class="icon"></span> Keep me Signed in</label> </div>
-                                <div class="group"> <input type="submit" class="button" value="Sign In"> </div>
-                                <div class="hr"></div>
-                                <div class="foot"> <a href="#">Forgot Password?</a> </div>
-                            </div>
-                            <div class="sign-up-form">
-                                <div class="group"> <label for="user" class="label">Username</label> <input id="user" type="text" class="input" placeholder="Create your Username"> </div>
-                                <div class="group"> <label for="pass" class="label">Password</label> <input id="pass" type="password" class="input" data-type="password" placeholder="Create your password"> </div>
-                                <div class="group"> <label for="pass" class="label">Repeat Password</label> <input id="pass" type="password" class="input" data-type="password" placeholder="Repeat your password"> </div>
-                                <div class="group"> <label for="pass" class="label">Email Address</label> <input id="pass" type="text" class="input" placeholder="Enter your email address"> </div>
-                                <div class="group"> <input type="submit" class="button" value="Sign Up"> </div>
-                                <div class="hr"></div>
-                                <div class="foot"> <label for="tab-1">Already Member?</label> </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+		<div class="col-card">
+			<div class="card">
+				<div class="login-box">
+					<div class="login-snip"> <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label
+							for="tab-1" class="tab">Login</label> <input id="tab-2" type="radio" name="tab"
+							class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
+						<div class="login-space">
+							<div class="login">
+								<div class="group"> <label for="user" class="label">Username</label> <input id="user"
+										type="text" class="input" placeholder="Enter your username"> </div>
+								<div class="group"> <label for="pass" class="label">Password</label> <input id="pass"
+										type="password" class="input" data-type="password"
+										placeholder="Enter your password"> </div>
+								<div class="group"> <input id="check" type="checkbox" class="check" checked> <label
+										for="check"><span class="icon"></span> Keep me Signed in</label> </div>
+								<div class="group"> <input type="submit" class="button" value="Sign In"
+										onclick="login()"> </div>
+								<div class="hr"></div>
+								<div class="foot"> <a href="#">Forgot Password?</a> </div>
+							</div>
+							<div class="sign-up-form">
+								<div class="group"> <label for="user" class="label">Username</label> <input
+										id="signuser" type="text" class="input" placeholder="Create your Username" onblur="checkusername()">
+								</div>
+								<div class="group"> <label for="pass" class="label">Password</label> <input
+										id="signpass" type="password" class="input" data-type="password"
+										placeholder="Create your password"> </div>
+								<div class="group"> <label for="pass" class="label">Repeat Password</label> <input
+										id="repass" type="password" class="input" data-type="password"
+										placeholder="Repeat your password"> </div>
+								<div class="group"> <label for="pass" class="label">Email Address</label> <input
+										id="email" type="email" class="input" placeholder="Enter your email address">
+								</div>
+								<div class="group"> <input type="submit" class="button" value="Sign Up"
+										onclick="signup()">
+								</div>
+								<div class="hr"></div>
+								<div class="foot"> <label for="tab-1">Already Member?</label> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<!-- Footer section -->
 	<footer class="footer-section sticky-bottom">
-		<div  class="container content-center scale-1-2">
-					<img src="./img/logo/MS.png" alt="" id="">
+		<div class="container content-center scale-1-2">
+			<img src="./img/logo/MS.png" alt="" id="">
 		</div>
 	</footer>
 	<!-- Footer section end -->
-	
+
 	<!--====== Javascripts & Jquery ======-->
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -105,5 +225,6 @@
 	<script src="js/main.js"></script>
 	<script src="js/header.js"></script>
 
-	</body>
+</body>
+
 </html>
