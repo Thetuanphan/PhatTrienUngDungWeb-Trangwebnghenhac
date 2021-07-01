@@ -20,9 +20,22 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <script>
+        function onload(){
+            var tk = getCookie("tk");
+            var avatar = getCookie("ava");
+
+            $("#img-profile").attr("src",avatar);
+            $("#name-profile").text(tk);
+        }
+
+
+    </script>
+
 </head>
 
-<body id="page-top">
+
+<body id="page-top" onload="onload()">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -269,8 +282,9 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="name-profile">linh</span>
+
+                                <img class="img-profile rounded-circle" id="img-profile"
                                     src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
@@ -692,6 +706,8 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/linh.js"></script>
+
 
 </body>
 
