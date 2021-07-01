@@ -45,34 +45,30 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                Tài khoản
             </div>
 
             
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="quanly-album.html">
+                <a class="nav-link" href="user.html">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Quản Lý Album</span></a>
+                    <span>Danh sách yêu thích</span></a>
             </li>
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="quanly-nhac.html">
+                <a class="nav-link" href="user-pass.html">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Quản Lý Nhạc</span></a>
+                    <span>Thay đổi mật khẩu</span></a>
             </li>
 
             <!-- Divider -->
@@ -153,26 +149,7 @@
                                     src="img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Logout
-                                </a>
-                            </div>
+                            
                         </li>
 
                     </ul>
@@ -183,89 +160,47 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <div class="add-album">
-                        <p> Nhập tên bài hát mới: </p>
+                    <div class="pass">
+
+                        <p> Nhập mật khẩu cũ: </p>
 
                         <div class="row">
-                            <input class="form-control" type="text" placeholder="Mã Bài Hát">
-                            <input class="form-control" type="text" placeholder="Tên Bài Hát">
-                            <input class="form-control" type="text" placeholder="Trong Album">
-                            <input class="form-control" type="text" placeholder="Link Bài Hát">
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-image"></i></button>
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-upload"></i></button>
+                            <input class="form-control" type="text" placeholder="Mật khẩu cũ">
+                        </div>
+                        
+                    </div>
+                    <div class="pass">
+
+                        <p> Nhập mật khẩu mới: </p>
+
+                        <div class="row">
+                            <input class="form-control" type="text" placeholder="Mật khẩu mới">
+                        </div>
+                        
+                    </div>
+                    <div class="pass">
+
+                        <p> Xác nhận mật khẩu mới: </p>
+
+                        <div class="row">
+                            <input class="form-control" type="text" placeholder="Nhập lại mật khẩu mới">
                         </div>
                         
                     </div>
 
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Danh sách bài hát</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th width="10%">STT</th>
-                                            <th width="40%">Tên bài hát</th>
-                                            <th width="40%">Tên ca sĩ</th>
-                                            <th width="10%">Chỉnh sửa</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th width="10%">STT</th>
-                                            <th width="40%">Tên bài hát</th>
-                                            <th width="40%">Tên ca sĩ</th>
-                                            <th width="10%">Chỉnh sửa</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
+                    <div class="pass">
 
-                                        <!-- Col -->
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Song 1</td>
-                                            <td>Artist 1</td>
-                                            <td>
-                                                <!-- Call to action buttons -->
-                                            <ul class="list-inline m-0">
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                                </li>
-                                            </ul>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Col -->
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Album 1</td>
-                                            <td>Artist 1</td>
-                                            <td>
-                                                <!-- Call to action buttons -->
-                                            <ul class="list-inline m-0">
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                                </li>
-                                            </ul>
-                                            </td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="row">
+                            <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Check"><i class="fa fa-check"></i></button>
                         </div>
+                        
                     </div>
 
-                </div>
+                    <!-- Song-Album Table -->
+                    
+
+                    <!-- DataTales Example -->
+                    
                 <!-- /.container-fluid -->
 
             </div>

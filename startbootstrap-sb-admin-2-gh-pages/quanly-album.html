@@ -184,9 +184,11 @@
                 <div class="container-fluid">
 
                     <div class="add-album">
+
                         <p> Nhập tên album mới: </p>
 
                         <div class="row">
+                            <input class="form-control" type="text" placeholder="Mã Album">
                             <input class="form-control" type="text" placeholder="Tên Album">
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-image"></i></button>
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-upload"></i></button>
@@ -194,11 +196,83 @@
                         
                     </div>
 
+                    <div class="add-baihatalbum">
+                        <p> Thêm bài hát vào album: </p>
+                        <div class="row">
+                            <input class="form-control" type="text" placeholder="Mã Album">
+
+                            <div class="dropdown show">
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  Tên bài hát
+                                </a>
+                              
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                  <a class="dropdown-item" href="#">Song 1</a>
+                                  <a class="dropdown-item" href="#">Song 2</a>
+                                  <a class="dropdown-item" href="#">Song 3</a>
+                                </div>
+                              </div>
+
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-image"></i></button>
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-upload"></i></button>
+
+                        </div>
+                    </div>
+
+                    <!-- Song-Album Table -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Danh sách mã album / bài hát</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">STT</th>
+                                            <th width="45%">Mã Album</th>
+                                            <th width="45%">Mã bài hát</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th width="10%">STT</th>
+                                            <th width="45%">Mã Album</th>
+                                            <th width="45%">Mã bài hát</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album001</td>
+                                            <td>Song001</td>
+                                                <!-- Call to action buttons -->
+                                           
+                                            </td>
+                                        </tr>
+
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Album002</td>
+                                            <td>Song002</td>
+                                                <!-- Call to action buttons -->
+                                            
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                        </div>
+                            <h6 class="m-0 font-weight-bold text-primary">Danh sách album</h6>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

@@ -573,6 +573,38 @@ pre code {
   margin-left: 10px;
 }
 
+.add-baihatalbum{
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.add-baihatalbum input{
+  max-width: 250px;
+  margin-left: 10px;
+}
+
+.add-baihatalbum button{
+  margin-left: 10px;
+}
+
+.add-baihatalbum .dropdown {
+  margin-left: 10px;
+}
+
+.pass{
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+.pass input{
+  max-width: 250px;
+  margin-left: 10px;
+}
+
+.pass button{
+  margin-left: 10px;
+}
+
 @media (min-width: 576px) {
   .container, .container-sm {
     max-width: 540px;
