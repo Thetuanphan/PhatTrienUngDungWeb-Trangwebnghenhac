@@ -56,12 +56,14 @@
             $taikhoan =$data[0]['TaiKhoan'];
             $matkhau = $data[0]['MatKhau'];
             $hinhanh = $data[0]['Avatar'];
+            $chucvu = $data[0]['MaChucVu'];
             //lưu thông tin người dùng vào cookie
             setcookie('mand', $mand, time() + (86400 * 30),"/"); // 86400 = 1 day
             setcookie('tennd', $tennd, time() + (86400 * 30),"/"); // 86400 = 1 day
             setcookie('tk', $taikhoan, time() + (86400 * 30),"/"); // 86400 = 1 day
             setcookie('mk', $matkhau, time() + (86400 * 30),"/"); // 86400 = 1 day
             setcookie('ava', $hinhanh, time() + (86400 * 30),"/"); // 86400 = 1 day
+            setcookie('chucvu', $chucvu, time() + (86400 * 30),"/"); // 86400 = 1 day
             //chuyển mảng kết quả thành mảng kết quả json
 		    //echo json_encode($data);
             echo "true";   
