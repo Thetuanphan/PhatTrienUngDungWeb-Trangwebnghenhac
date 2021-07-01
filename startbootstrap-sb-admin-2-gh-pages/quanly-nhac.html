@@ -23,9 +23,103 @@
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+
+    <script>
+        function onload() {
+            var tk = getCookie("tk");
+            var avatar = getCookie("ava");
+
+            $("#img-profile").attr("src", avatar);
+            $("#name-profile").text(tk);
+            showManege();
+        }
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        function showManege() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function (ktra) {
+                if (this.readyState == 4 && this.status == 200) {
+                    var listsearchResult = JSON.parse(this.responseText);
+                    var i = 1;
+                    for (iresult in listsearchResult) {
+                        if (i <= 10) {
+                            document.getElementById("dataTable").rows[i].cells[0].innerHTML = listsearchResult[iresult].MaBaiHat;
+                            document.getElementById("dataTable").rows[i].cells[1].innerHTML = listsearchResult[iresult].TenBaiHat;
+                            document.getElementById("dataTable").rows[i].cells[2].innerHTML = listsearchResult[iresult].TenCaSi;
+                            i++;
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                }
+            }
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectsong", true);
+            xhttp.send();
+        }
+
+        function createsong() {
+            // lấy tài khoản mất khẩu
+            if (checkvalidsong()) {
+                var songname = document.getElementById("songname").value;
+                var singername = document.getElementById("singername").value;
+                var linksong = document.getElementById("linksong").value;
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if(this.responseText=="1"){
+                            alert("Thêm thành công");
+                        }
+                        else{
+                            alert("Thêm thất bại");
+                        }
+                    }
+                }
+                //send request
+                xhttp.open("GET","http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=createsong&songname="+songname+"&singername="+singername+"&linksong="+linksong, true);
+                xhttp.send();
+            }
+        }
+
+        function checkvalidsong() {
+            var songname = document.getElementById("songname").value;
+            var singername = document.getElementById("singername").value;
+            var linksong = document.getElementById("linksong").value;
+
+            if (songname == "") {
+                alert("Vui lòng nhập tên bài hát");
+                return false
+            }
+            if (singername == "") {
+                alert("Vui lòng nhập tên ca sĩ");
+                return false;
+            }
+            if (linksong == "") {
+                alert("Vui lòng nhập link bài hát");
+                return false;
+            }
+            return true;
+        }
+
+
+    </script>
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="onload()">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -59,7 +153,7 @@
                 Interface
             </div>
 
-            
+
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
@@ -143,14 +237,14 @@
                             </div>
                         </li>
 
-                       
+
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="name-profile">Douglas
+                                    McGee</span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" id="img-profile">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -187,14 +281,16 @@
                         <p> Nhập tên bài hát mới: </p>
 
                         <div class="row">
-                            <input class="form-control" type="text" placeholder="Mã Bài Hát">
-                            <input class="form-control" type="text" placeholder="Tên Bài Hát">
-                            <input class="form-control" type="text" placeholder="Trong Album">
-                            <input class="form-control" type="text" placeholder="Link Bài Hát">
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-image"></i></button>
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-upload"></i></button>
+                            <!-- <input class="form-control" type="text" placeholder="Mã Bài Hát" id="mabh"> -->
+                            <input class="form-control" type="text" placeholder="Tên Bài Hát" id="songname">
+                            <input class="form-control" type="text" placeholder="Tên Ca Sĩ" id="singername">
+                            <input class="form-control" type="text" placeholder="Link Bài Hát" id="linksong">
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                data-placement="top" title="Edit"><i class="fa fa-image"></i></button>
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                data-placement="top" title="Edit" onclick="createsong()"><i class="fa fa-upload"></i></button>
                         </div>
-                        
+
                     </div>
 
                     <!-- DataTales Example -->
@@ -230,14 +326,18 @@
                                             <td>Artist 1</td>
                                             <td>
                                                 <!-- Call to action buttons -->
-                                            <ul class="list-inline m-0">
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                                </li>
-                                            </ul>
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
                                             </td>
                                         </tr>
 
@@ -248,17 +348,189 @@
                                             <td>Artist 1</td>
                                             <td>
                                                 <!-- Call to action buttons -->
-                                            <ul class="list-inline m-0">
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                                </li>
-                                            </ul>
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
                                             </td>
                                         </tr>
-                                        
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album 1</td>
+                                            <td>Artist 1</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album 1</td>
+                                            <td>Artist 1</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album 1</td>
+                                            <td>Artist 1</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album 1</td>
+                                            <td>Artist 1</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album 1</td>
+                                            <td>Artist 1</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album 1</td>
+                                            <td>Artist 1</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album 1</td>
+                                            <td>Artist 1</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                        <!-- Col -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Album 1</td>
+                                            <td>Artist 1</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                                class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                                class="fa fa-trash"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -328,6 +600,9 @@
 
     <!-- Page level custom scripts -->
     <script src="js/demo/datatables-demo.js"></script>
+
+
+    </script>
 
 </body>
 

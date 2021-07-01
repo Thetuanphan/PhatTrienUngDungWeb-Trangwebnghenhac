@@ -1,3 +1,7 @@
+<?php 
+   error_reporting(0);
+?> 
+
 <?php
 
    $action =  $_GET['action'];
@@ -25,6 +29,15 @@
         $username=$_GET['username'];             
         $stringsql ="SELECT * FROM `nguoidung` WHERE `TaiKhoan` like '".$username."';";
         checkuser($stringsql);
+    }
+    elseif($action=="selectsong"){
+        $keyword ="";
+        $keyword = $_GET['keyword'];
+        $stringsql ="SELECT * FROM `baihat` WHERE TenBaiHat LIKE '%".$keyword."%' or TenCaSi LIKE '".$keyword."'";
+        select($stringsql);
+    }
+    elseif($action=="createsong"){
+        createsong();
     }
 
     //funtion---------------------------------------------------------------------------------------------------------------------------
@@ -56,12 +69,14 @@
             $taikhoan =$data[0]['TaiKhoan'];
             $matkhau = $data[0]['MatKhau'];
             $hinhanh = $data[0]['Avatar'];
+            $chucvu = $data[0]['MaChucVu'];
             //lưu thông tin người dùng vào cookie
             setcookie('mand', $mand, time() + (86400 * 30),"/"); // 86400 = 1 day
             setcookie('tennd', $tennd, time() + (86400 * 30),"/"); // 86400 = 1 day
             setcookie('tk', $taikhoan, time() + (86400 * 30),"/"); // 86400 = 1 day
             setcookie('mk', $matkhau, time() + (86400 * 30),"/"); // 86400 = 1 day
             setcookie('ava', $hinhanh, time() + (86400 * 30),"/"); // 86400 = 1 day
+            setcookie('chucvu', $chucvu, time() + (86400 * 30),"/"); // 86400 = 1 day
             //chuyển mảng kết quả thành mảng kết quả json
 		    //echo json_encode($data);
             echo "true";   
@@ -102,6 +117,7 @@
         $conn->close();
 
     }
+    //function signup
     function signup(){        
         $user = $_GET['user'];
         $pass = $_GET['pass']; 
@@ -129,7 +145,7 @@
         $conn->close();
 
     }
-    //
+    //function check user
     function checkuser($stringsql){
         $servername = "localhost";
         $username = "root";
@@ -157,6 +173,37 @@
         $conn->close();
 
     }
+    //function create song
+    function createsong(){        
+        $songname = $_GET['songname'];
+        $singername = $_GET['singername']; 
+        $linksong = $_GET['linksong'];
+ 
+
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "wednhac";       
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+            }
+        //INSERT INTO `baihat`(`MaBaiHat`, `TenBaiHat`, `TenCaSi`, `LinkBaiHat`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]')
+        $sql = 'INSERT INTO `baihat`(`TenBaiHat`, `TenCaSi`, `LinkBaiHat`) VALUES ("'.$songname.'","'.$singername.'","'.$linksong.'")';
+
+        if ($conn->query($sql) === TRUE) {
+             echo "1";
+        } else {
+            echo "0";
+        }
+
+        $conn->close();
+
+    }
+    //
     
 
           

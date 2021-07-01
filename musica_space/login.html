@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zxx">
 
 <head>
@@ -44,15 +44,26 @@
 				if (this.readyState == 4 && this.status == 200) {
 					var kq = this.responseText;
 					if (kq == "true") {
-						alert("login succcess");						//window.location.href ="http://localhost/Music-Media-Website/Branch_admin/user/UserPage.html";
+						resultcheck("login succcess", 1);
+						if(getCookie("chucvu")==1){
+							window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/startbootstrap-sb-admin-2-gh-pages/";
+						}
+						if(getCookie("chucvu")==2){
+							window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/startbootstrap-sb-admin-2-gh-pages/user.html";
+						}
 					}
-					else { alert("login fail"); }
+					else {
+						resultcheck("login fail", 0)
+					}
+
 				}
+				
 			}
 			//send request
 			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=login&user=" + user + "&pass=" + pass, true);
-			xhttp.send();
+				xhttp.send();
 		}
+
 		function signup() {
 			// lấy tài khoản mất khẩu
 			if (check()) {
@@ -63,7 +74,7 @@
 				xhttp.onreadystatechange = function () {
 					if (this.readyState == 4 && this.status == 200) {
 						var kq = this.responseText;
-						alert(kq);
+						resultcheck("signup succcess", 1);
 					}
 				}
 				//send request
@@ -71,7 +82,7 @@
 				xhttp.send();
 			}
 			else {
-				alert("đăng ký thất bại");
+				//resultcheck("signup fail",0);
 			}
 
 		}
@@ -81,30 +92,30 @@
 			var repass = document.getElementById("repass").value;
 			var email = document.getElementById("email").value;
 			if (user == "") {
-				alert("không để trống tài khoảng");
+				resultcheck("Không để trống tài khoảng", 0);
 				return false;
 			}
 			if (pass == "") {
-				alert("không để trống mật khẩu");
+				resultcheck("Không để trống mật khẩu", 0);
 				return false;
-			} 
+			}
 			if (repass == "") {
-				alert("không để trống mật khẩu");
+				resultcheck("Không để trống mật khẩu", 0);
 				return false;
-			} 
+			}
 			if (pass != repass) {
-				alert("không trùng khớp");
+				resultcheck("Mật khẩu không trùng khớp", 0);
 				return false;
 			}
 			if (email == "") {
-				alert("không để trống email");
+				resultcheck("Không để trống email", 0);
 				return false;
 			}
-			if(!validateEmail(email)){
-				alert(" email không hợp lệ");
+			if (!validateEmail(email)) {
+				resultcheck("email không hợp lệ", 0);
 				return false;
 			}
-			
+
 			else {
 				return true;
 			}
@@ -118,19 +129,43 @@
 		//kiểm tra tài khoảng trùng
 		function checkusername() {
 			// lấy tài khoản mất khẩu
-				var user = document.getElementById("signuser").value;
-				var xhttp = new XMLHttpRequest();
-				xhttp.onreadystatechange = function (ktra) {
-					if (this.readyState == 4 && this.status == 200) {
-						var kq = this.responseText;
-						if(kq=="1")
-							alert("Trùng tài khoản - xin hãy chọn một tài khoản khác");
-					}
+			var user = document.getElementById("signuser").value;
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function (ktra) {
+				if (this.readyState == 4 && this.status == 200) {
+					var kq = this.responseText;
+					if (kq == "1") { $('.toast2').toast("show"); }
 				}
-				//send request
-				xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=checkuser&username="+user+"", true);
-				xhttp.send();
 			}
+			//send request
+			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=checkuser&username=" + user + "", true);
+			xhttp.send();
+		}
+		function resultcheck(toastbody, result) {
+			document.getElementById("toastbody").innerHTML = toastbody;
+			if (result == 0) {
+				$("#toastimg").attr("src", "https://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/Close-2-icon.png")
+			} if (result == 1) {
+				$("#toastimg").attr("src", "https://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/128/success-icon.png")
+			}
+			$('.toast1').toast("show");
+
+		}
+		function getCookie(cname) {
+			let name = cname + "=";
+			let decodedCookie = decodeURIComponent(document.cookie);
+			let ca = decodedCookie.split(';');
+			for (let i = 0; i < ca.length; i++) {
+				let c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
 
 	</script>
 </head>
@@ -184,7 +219,8 @@
 							</div>
 							<div class="sign-up-form">
 								<div class="group"> <label for="user" class="label">Username</label> <input
-										id="signuser" type="text" class="input" placeholder="Create your Username" onblur="checkusername()">
+										id="signuser" type="text" class="input" placeholder="Create your Username"
+										onblur="checkusername()">
 								</div>
 								<div class="group"> <label for="pass" class="label">Password</label> <input
 										id="signpass" type="password" class="input" data-type="password"
@@ -204,6 +240,42 @@
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<!-- Flexbox container for aligning the toasts -->
+	<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center"
+		style="min-height: 200px; position: absolute;  right: 0; top: 100px; flex-direction: column;">
+
+		<!-- Then put toasts within -->
+		<div class="toast toast1" role="alert" aria-live="assertive" aria-atomic="true" aria-autohide="false"
+			data-delay="2000" style="min-width: 300px;">
+			<div class="toast-header">
+				<img class="rounded mr-2 " alt="" id="toastimg" style="width:20px;">
+				<strong class="mr-auto" id="toastheader">notification</strong>
+				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="toast-body text-center" id="toastbody">
+
+			</div>
+		</div>
+		<div class="toast toast2" role="alert" aria-live="assertive" aria-atomic="true" data-delay="2000"
+			style="min-width: 300px;">
+			<div class="toast-header">
+				<img src="https://icons.iconarchive.com/icons/hopstarter/sleek-xp-basic/128/Close-2-icon.png"
+					class="rounded mr-2 " alt="" style="width:20px;">
+				<strong class="mr-auto">notification</strong>
+				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="toast-body text-center">
+				Tài khoản đã tồn tại
 			</div>
 		</div>
 	</div>
