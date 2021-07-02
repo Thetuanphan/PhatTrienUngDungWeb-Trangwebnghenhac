@@ -12,8 +12,9 @@ background: radial-gradient(circle, rgba(148,198,242,1) 50%, rgba(107,141,242,1)
     max-width: 525px;
     min-height: 670px;
     position: relative;
-    background: #6B8DF2;
-    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19)
+    background-color: #6B8DF2;
+    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, .19);
+    border-radius: 10%;
 }
 
 .login-snip {
@@ -21,7 +22,8 @@ background: radial-gradient(circle, rgba(148,198,242,1) 50%, rgba(107,141,242,1)
     height: 100%;
     position: absolute;
     padding: 90px 70px 50px 70px;
-    background: #6B8DF2
+    background: #6B8DF2;
+    border-radius: 10%;
 }
 
 .login-snip .login,
@@ -195,7 +197,7 @@ a {
 .card {
     width: 500px;
     left: 100px;
-    
+    border-radius: 10%;
 }
 
 ::placeholder {
@@ -204,5 +206,6 @@ a {
 
 .col-card{
     margin: 100px auto 100px auto !important;
+    border-radius: 10%;
 }
 
