@@ -12,7 +12,7 @@
     <title>Quản lý Nhạc</title>
 
     <!-- Favicon -->
-	<link href="./img/logo/MS_64.png" rel="shorcut icon"/>
+    <link href="./img/logo/MS_64.png" rel="shorcut icon" />
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,7 +34,21 @@
 
             $("#img-profile").attr("src", avatar);
             $("#name-profile").text(tk);
-            showManege();
+            search();
+            $("#searchfor").keyup(function () {
+                search();
+            });
+            //xóa khi nhấn
+            $("button[title='Delete']").click(function () {
+                var index = $(this).parents("tr").find("td:first").text();
+                deletesong(index);
+            });
+            //edit bai hat
+            $("button[title='Edit']").click(function () {
+                var x = $(this).parents("tr").find("td:first").text();
+                edit(x);
+            });
+
         }
         function getCookie(cname) {
             let name = cname + "=";
@@ -51,53 +65,45 @@
             }
             return "";
         }
-        function showManege() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function (ktra) {
-                if (this.readyState == 4 && this.status == 200) {
-                    var listsearchResult = JSON.parse(this.responseText);
-                    var i = 1;
-                    for (iresult in listsearchResult) {
-                        if (i <= 10) {
-                            document.getElementById("dataTable").rows[i].cells[0].innerHTML = listsearchResult[iresult].MaBaiHat;
-                            document.getElementById("dataTable").rows[i].cells[1].innerHTML = listsearchResult[iresult].TenBaiHat;
-                            document.getElementById("dataTable").rows[i].cells[2].innerHTML = listsearchResult[iresult].TenCaSi;
-                            i++;
-                        }
-                        else {
-                            break;
-                        }
-                    }
-                }
-            }
-            //send request
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectsong", true);
-            xhttp.send();
-        }
 
+        //thêm bài hát
         function createsong() {
-            // lấy tài khoản mất khẩu
+
             if (checkvalidsong()) {
                 var songname = document.getElementById("songname").value;
                 var singername = document.getElementById("singername").value;
                 var linksong = document.getElementById("linksong").value;
+                var linkimage = document.getElementById("linkimage").value;
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
-                        if(this.responseText=="1"){
+                        if (this.responseText.trim() == "1") {
                             alert("Thêm thành công");
                         }
-                        else{
+                        else {
                             alert("Thêm thất bại");
                         }
                     }
                 }
-                //send request
-                xhttp.open("GET","http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=createsong&songname="+songname+"&singername="+singername+"&linksong="+linksong, true);
-                xhttp.send();
-            }
-        }
+                if (linkimage != "") {
+                    //send request has linkimage
+                    xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=createsong&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong + "&linkimage=" + linkimage, true);
+                    xhttp.send();
+                }
+                else {
+                    //send request hasn't linkimage
+                    xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=createsong&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong, true);
+                    xhttp.send();
+                }
 
+            }
+            document.getElementById("songname").value = "";
+            document.getElementById("singername").value = "";
+            document.getElementById("linksong").value = "";
+            document.getElementById("linkimage").value = "";
+            showManege();
+        }
+        //kiểm tra hợp lệ
         function checkvalidsong() {
             var songname = document.getElementById("songname").value;
             var singername = document.getElementById("singername").value;
@@ -115,9 +121,69 @@
                 alert("Vui lòng nhập link bài hát");
                 return false;
             }
+            if (linkimage.length > 200) {
+                alert("link quá dài");
+                return false;
+            }
             return true;
         }
+        //tìm kiếm bài hát -load bài hát khi tải trang
+        function search() {
+            var keyword = document.getElementById("searchfor").value;
 
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function (ktra) {
+                if (this.readyState == 4 && this.status == 200) {
+                    var listsearchResult = JSON.parse(this.responseText);
+                    var length = listsearchResult.length;
+                    var i = 1;
+                    for (var x = 1; x <= 10; x++) {
+                        if (x <= length) {
+                            document.getElementById("dataTable").rows[x].style.display = "table-row";
+                            document.getElementById("dataTable").rows[x].cells[0].innerHTML = listsearchResult[x - 1].MaBaiHat;
+                            document.getElementById("dataTable").rows[x].cells[1].innerHTML = listsearchResult[x - 1].TenBaiHat;
+                            document.getElementById("dataTable").rows[x].cells[2].innerHTML = listsearchResult[x - 1].TenCaSi;
+                        }
+                        else {
+                            document.getElementById("dataTable").rows[x].style.display = "none";
+                        }
+                    }
+                }
+            }
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectsong&keyword=" + keyword, true);
+            xhttp.send();
+        }
+        //xóa bài hát
+        function deletesong(index) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var message = this.responseText;
+                    alert(message);
+                    window.location.reload();
+                }
+            };
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=delete&id=" + index, true);
+            xhttp.send();
+        }
+        //edit
+        function edit(index) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var listsearchResult = JSON.parse(this.responseText);
+                    $("#songname").val(listsearchResult[0].TenBaiHat);
+                    $("#singername").val(listsearchResult[0].TenCaSi);
+                    $("#linksong").val(listsearchResult[0].LinkBaiHat);
+                    $("#linkimage").val(listsearchResult[0].HinhAnh);
+                }
+            }
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=edit&id=" + index, true);
+            xhttp.send();
+        }
 
     </script>
 </head>
@@ -203,7 +269,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
+                                aria-label="Search" aria-describedby="basic-addon2" id="searchfor">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
@@ -289,7 +355,8 @@
                             <input class="form-control" type="text" placeholder="Link Bài Hát" id="linksong">
                             <input class="form-control" type="text" placeholder="Link Ảnh" id="linkimage">
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                data-placement="top" title="Edit" onclick="createsong()"><i class="fa fa-plus"></i></button>
+                                data-placement="top" title="Edit" onclick="createsong()"><i
+                                    class="fa fa-plus"></i></button>
                         </div>
 
                     </div>
@@ -604,7 +671,7 @@
 
 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $("label > input").attr('id', 'search')
         });
     </script>

@@ -34,8 +34,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<script>
-		//đăng nhập
-		function login() {
+			function login() {
 			// lấy tài khoản mất khẩu
 			var user = document.getElementById("user").value;
 			var pass = document.getElementById("pass").value;
@@ -43,25 +42,25 @@
 			xhttp.onreadystatechange = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var kq = this.responseText;
+					kq = kq.trim();
 					if (kq == "true") {
-						resultcheck("login succcess", 1);
-						if(getCookie("chucvu")==1){
+                        resultcheck("login succcess", 1);
+						if (getCookie("chucvu") == 1) {
 							window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/startbootstrap-sb-admin-2-gh-pages/";
 						}
-						if(getCookie("chucvu")==2){
+						if (getCookie("chucvu") == 2) {
 							window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/startbootstrap-sb-admin-2-gh-pages/user.html";
 						}
+
 					}
-					else {
-						resultcheck("login fail", 0)
-					}
+					else { resultcheck("login fail", 0); }
 
 				}
-				
+
 			}
 			//send request
 			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=login&user=" + user + "&pass=" + pass, true);
-				xhttp.send();
+			xhttp.send();
 		}
 
 		function signup() {
@@ -84,7 +83,6 @@
 			else {
 				//resultcheck("signup fail",0);
 			}
-
 		}
 		function check() {
 			var user = document.getElementById("signuser").value;

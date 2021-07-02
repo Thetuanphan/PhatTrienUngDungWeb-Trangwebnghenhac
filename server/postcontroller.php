@@ -31,13 +31,20 @@
         checkuser($stringsql);
     }
     elseif($action=="selectsong"){
-        $keyword ="";
         $keyword = $_GET['keyword'];
-        $stringsql ="SELECT * FROM `baihat` WHERE TenBaiHat LIKE '%".$keyword."%' or TenCaSi LIKE '".$keyword."'";
+        $stringsql ="SELECT * FROM `baihat` WHERE `TenBaiHat` LIKE '%".$keyword."%' or`TenCaSi`  LIKE '%".$keyword."%'";
         select($stringsql);
     }
     elseif($action=="createsong"){
         createsong();
+    }
+    elseif($action=="delete"){
+        deletesong();
+    }
+    elseif($action=="edit"){
+        $id = $_GET['id'];
+        $stringsql ="SELECT * FROM `baihat` WHERE`MaBaiHat`=".$id."";
+        select($stringsql);
     }
 
     //funtion---------------------------------------------------------------------------------------------------------------------------
@@ -178,8 +185,11 @@
         $songname = $_GET['songname'];
         $singername = $_GET['singername']; 
         $linksong = $_GET['linksong'];
- 
-
+        
+        $linkimage = $_GET['linkimage'];
+        if($linkimage ==""){
+            $linkimage ="https://img.lovepik.com/element/40131/7988.png_860.png";
+        }
         $servername = "localhost";
         $username = "root";
         $password = "";
@@ -192,8 +202,7 @@
          die("Connection failed: " . $conn->connect_error);
             }
         //INSERT INTO `baihat`(`MaBaiHat`, `TenBaiHat`, `TenCaSi`, `LinkBaiHat`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]')
-        $sql = 'INSERT INTO `baihat`(`TenBaiHat`, `TenCaSi`, `LinkBaiHat`) VALUES ("'.$songname.'","'.$singername.'","'.$linksong.'")';
-
+        $sql = 'INSERT INTO `baihat`(`TenBaiHat`, `TenCaSi`, `LinkBaiHat`,`HinhAnh`) VALUES ("'.$songname.'","'.$singername.'","'.$linksong.'","'.$linkimage.'")'; 
         if ($conn->query($sql) === TRUE) {
              echo "1";
         } else {
@@ -203,7 +212,35 @@
         $conn->close();
 
     }
-    //
+    //function delete song
+    function deletesong(){
+        $id = $_GET['id'];
+
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "wednhac";
+        
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+        }
+        
+        // sql to delete a record
+        $sql = "DELETE FROM `baihat` WHERE `MaBaiHat` = ".$id."";
+        echo $sql;
+        die();
+        
+        if ($conn->query($sql) === TRUE) {
+          echo "delete product ".$Id." success";
+        } else {
+          echo "Error deleting record: " . $conn->error;
+      }
+      $conn->close();
+
+    }
     
 
           
