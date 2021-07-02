@@ -25,26 +25,35 @@
         $stringsql ="SELECT * FROM `album` WHERE `TenAlbum` like '%".$keyword."%'";
         select($stringsql);
     }
+    //kiem tra user trùng
     elseif($action =="checkuser"){
         $username=$_GET['username'];             
         $stringsql ="SELECT * FROM `nguoidung` WHERE `TaiKhoan` like '".$username."';";
         checkuser($stringsql);
     }
+    //tải danh sách bài hát
     elseif($action=="selectsong"){
         $keyword = $_GET['keyword'];
         $stringsql ="SELECT * FROM `baihat` WHERE `TenBaiHat` LIKE '%".$keyword."%' or`TenCaSi`  LIKE '%".$keyword."%'";
         select($stringsql);
     }
+    //thêm bài hát
     elseif($action=="createsong"){
         createsong();
     }
+    //xóa bài hát
     elseif($action=="delete"){
         deletesong();
     }
+    //roll dữ liệu chuẩn bị update
     elseif($action=="edit"){
         $id = $_GET['id'];
         $stringsql ="SELECT * FROM `baihat` WHERE`MaBaiHat`=".$id."";
         select($stringsql);
+    }
+    //update song
+    elseif($action=="updatesong"){
+        updatesong($id);
     }
 
     //funtion---------------------------------------------------------------------------------------------------------------------------
@@ -185,7 +194,7 @@
         $songname = $_GET['songname'];
         $singername = $_GET['singername']; 
         $linksong = $_GET['linksong'];
-        
+        $linksong = getdirectlink($linksong);
         $linkimage = $_GET['linkimage'];
         if($linkimage ==""){
             $linkimage ="https://img.lovepik.com/element/40131/7988.png_860.png";
@@ -241,6 +250,48 @@
       $conn->close();
 
     }
+    //function update song
+    
+    function updatesong(){  
+        // Using database connection file here
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "wednhac";
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+        }
+            $id = $_GET['mabaihat'];
+         $songname = $_GET['songname'];
+         $singername = $_GET['singername'];
+         $linksong = $_GET['linksong'];
+         $linksong = getdirectlink($linksong);
+         $linkimage = $_GET['linkimage'];
+         if($linkimage ==""){
+             $linkimage ="https://img.lovepik.com/element/40131/7988.png_860.png";
+         }
+
+        $sql = "UPDATE `baihat` SET `TenBaiHat`='".$songname."',`TenCaSi`='".$singername."',`LinkBaiHat`='".$linksong."',`HinhAnh`='".$linkimage."' WHERE `MaBaiHat` =".$id."";
+        echo $sql;
+         die();
+        if ($conn->query($sql) === TRUE) {         
+            echo "bài hát ".$id." update thành công";
+          } else {
+            echo "";
+          }
+          
+          
+    }
+
+    function getdirectlink($link){
+        $link = preg_replace('/\/file\/d\/(.+)\/(.+)/',"/uc?export=download&id=$1", $link);
+        return $link;
+    }
+
     
 
           

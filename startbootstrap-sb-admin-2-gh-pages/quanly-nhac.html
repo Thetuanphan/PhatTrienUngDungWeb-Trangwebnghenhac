@@ -26,8 +26,11 @@
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
-
     <script>
+
+    </script>
+    <script>
+
         function onload() {
             var tk = getCookie("tk");
             var avatar = getCookie("ava");
@@ -46,7 +49,30 @@
             //edit bai hat
             $("button[title='Edit']").click(function () {
                 var x = $(this).parents("tr").find("td:first").text();
-                edit(x);
+                $("#songid").val(x);
+                rolldata(x);
+            });
+
+            //refresh
+            $("#refresh").click(function () {
+                $("#songname").val("");
+                $("#singername").val("");
+                $("#linksong").val("");
+                $("#linkimage").val("");
+                $("#songid").val("");
+            });
+            //select length row table 10 25 50 100
+            $(document).ready(function () {
+                $("select[name='dataTable_length']").change(function () {
+                    visualrow();
+                    var x = $("select[name='dataTable_length']").val();
+                    showlength(x);
+                    search();
+                });
+            });
+            //logout
+            $("#logout").click(function(){
+                window.location.href="http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/login.html";
             });
 
         }
@@ -101,7 +127,7 @@
             document.getElementById("singername").value = "";
             document.getElementById("linksong").value = "";
             document.getElementById("linkimage").value = "";
-            showManege();
+            search();
         }
         //kiểm tra hợp lệ
         function checkvalidsong() {
@@ -130,14 +156,17 @@
         //tìm kiếm bài hát -load bài hát khi tải trang
         function search() {
             var keyword = document.getElementById("searchfor").value;
-
+            var row = $("select[name='dataTable_length']").val();
+            if (row == undefined) {
+                row = 10;
+            }
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function (ktra) {
                 if (this.readyState == 4 && this.status == 200) {
                     var listsearchResult = JSON.parse(this.responseText);
                     var length = listsearchResult.length;
                     var i = 1;
-                    for (var x = 1; x <= 10; x++) {
+                    for (var x = 1; x <= row; x++) {
                         if (x <= length) {
                             document.getElementById("dataTable").rows[x].style.display = "table-row";
                             document.getElementById("dataTable").rows[x].cells[0].innerHTML = listsearchResult[x - 1].MaBaiHat;
@@ -169,7 +198,7 @@
             xhttp.send();
         }
         //edit
-        function edit(index) {
+        function rolldata(index) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
@@ -184,6 +213,60 @@
             xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=edit&id=" + index, true);
             xhttp.send();
         }
+        //update song
+        function updatesong() {
+            var id = $("#songid").val();
+            if (checkvalidsong()) {
+                var songname = document.getElementById("songname").value;
+                var singername = document.getElementById("singername").value;
+                var linksong = document.getElementById("linksong").value;
+                var linkimage = document.getElementById("linkimage").value;
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        alert(this.responseText);
+                    }
+                }
+                if (linkimage != "") {
+                    //send request has linkimage
+                    xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=updatesong&mabaihat=" + id + "&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong + "&linkimage=" + linkimage, true);
+                    xhttp.send();
+                }
+                else {
+                    //send request hasn't linkimage
+                    xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=updatesong&mabaihat=" + id + "&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong, true);
+                    xhttp.send();
+                }
+
+            }
+            document.getElementById("songname").value = "";
+            document.getElementById("singername").value = "";
+            document.getElementById("linksong").value = "";
+            document.getElementById("linkimage").value = "";
+            $("#songid").val("");
+        }
+        //and thêm 90 cái
+        function visualrow() {
+            for (var i = 11; i <= 100; i++) {
+                $("#dataTable tbody").append("<tr>" + $("tbody tr:first").html() + "</tr>");
+                document.getElementById("dataTable").rows[i].style.display = "none"
+            }
+        }
+        //chọn bao nhiêu thì hiện bao nhiêu 10 25 50 100
+        function showlength(length) {
+            for (var i = 1; i <= 100; i++) {
+                if (i <= length) {
+                    document.getElementById("dataTable").rows[i].style.display = "table-row";
+                }
+                else {
+                    document.getElementById("dataTable").rows[i].style.display = "none";
+                }
+            }
+
+        }
+
+
 
     </script>
 </head>
@@ -317,8 +400,9 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"
+                                    id="logout">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -338,6 +422,7 @@
 
                         <div class="row">
                             <!-- <input class="form-control" type="text" placeholder="Mã Bài Hát" id="mabh"> -->
+                            <input class="form-control" type="hidden" placeholder="Tên Bài Hát" id="songid">
                             <input class="form-control" type="text" placeholder="Tên Bài Hát" id="songname">
                             <input class="form-control" type="text" placeholder="Tên Ca Sĩ" id="singername">
                             <input class="form-control" type="text" placeholder="Link Bài Hát" id="linksong">
@@ -345,12 +430,11 @@
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
                                 data-placement="top" title="Upload" onclick="createsong()"><i
                                     class="fa fa-plus"></i></button>
-                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                data-placement="top" title="Update" onclick="createsong()"><i
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                data-placement="top" title="Update" id="update" onclick="updatesong()"><i
                                     class="fa fa-edit"></i></button>
-                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                data-placement="top" title="Refresh" onclick="createsong()"><i
-                                    class="fa fa-sync"></i></button>
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                data-placement="top" title="Refresh" id="refresh"><i class="fa fa-sync"></i></button>
                         </div>
 
                     </div>
