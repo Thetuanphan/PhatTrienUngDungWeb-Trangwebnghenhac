@@ -27,17 +27,14 @@
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
     <script>
-
-    </script>
-    <script>
-
         function onload() {
+
             var tk = getCookie("tk");
             var avatar = getCookie("ava");
 
             $("#img-profile").attr("src", avatar);
             $("#name-profile").text(tk);
-            search();
+
             $("#searchfor").keyup(function () {
                 search();
             });
@@ -45,6 +42,7 @@
             $("button[title='Delete']").click(function () {
                 var index = $(this).parents("tr").find("td:first").text();
                 deletesong(index);
+                search();
             });
             //edit bai hat
             $("button[title='Edit']").click(function () {
@@ -63,18 +61,25 @@
             });
             //select length row table 10 25 50 100
             $(document).ready(function () {
+                visualrow();
+                search();
+                loadalbum();
+
                 $("select[name='dataTable_length']").change(function () {
                     visualrow();
-                    var x = $("select[name='dataTable_length']").val();
-                    showlength(x);
                     search();
+                addintoalbum();
+
+
+                    var numberrow = $("select[name='dataTable_length']").val();
+                    showlength(numberrow);
                 });
+
             });
             //logout
-            $("#logout").click(function(){
-                window.location.href="http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/login.html";
+            $("#logout").click(function () {
+                window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/login.html";
             });
-
         }
         function getCookie(cname) {
             let name = cname + "=";
@@ -176,6 +181,13 @@
                         else {
                             document.getElementById("dataTable").rows[x].style.display = "none";
                         }
+                        if (i == length) {
+                            var index = i + 1;
+                            while (index <= 100) {
+                                document.getElementById("dataTable").rows[index].style.display = "none";
+                                index++;
+                            }
+                        }
                     }
                 }
             }
@@ -248,7 +260,7 @@
         }
         //and thêm 90 cái
         function visualrow() {
-            for (var i = 11; i <= 100; i++) {
+            for (var i = 3; i <= 100; i++) {
                 $("#dataTable tbody").append("<tr>" + $("tbody tr:first").html() + "</tr>");
                 document.getElementById("dataTable").rows[i].style.display = "none"
             }
@@ -265,10 +277,47 @@
             }
 
         }
+        function loadalbum() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var listsearchResult = JSON.parse(this.responseText);
+                    var length = listsearchResult.length;
+                    for (var i = 0; i < length; i++) {
+                        var x = listsearchResult[i].TenAlbum;
+                        var id = listsearchResult[i].MaAlbum;
+                        $("div#listalbum").append("<a class=\"dropdown-item\" id=\"" + id + "\">" + x + "</a>");
 
+                    }
+                }
+                addintoalbum();
+            }
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectalbum", true);
+            xhttp.send();
+        }
+        function addintoalbum() {
+            $("td").find("a.dropdown-item").click(function () {
+                var idAlbum = $(this).attr("id");
+                var idSong = $(this).parents("tr").find("td:first").text();
+                addsongintoalbum(idSong, idAlbum);
+            });
+        }
 
+        function addsongintoalbum(idsong, idalbum) {
 
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var kq = this.responseText;
+                    alert(kq);
+                }
+            }
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addsongintoalbum&mabaihat=" + idsong + "&maalbum=" + idalbum + "", true);
+            xhttp.send();
+        }
     </script>
+
 </head>
 
 <body id="page-top" onload="onload()">
@@ -474,14 +523,12 @@
                                                 <!-- Call to action buttons -->
                                                 <ul class="list-inline m-0">
                                                     <li class="list-inline-item">
-                                                        <button class="btn btn-success btn-sm rounded-0 dropdown-toggle" type="button"
-                                                            data-toggle="dropdown" data-placement="top" title="Add Album"><i
-                                                                class="fa fa-plus"></i></button>
-                                                                <div class="dropdown-menu">
-                                                                    <a class="dropdown-item" href="#">Link 1</a>
-                                                                    <a class="dropdown-item" href="#">Link 2</a>
-                                                                    <a class="dropdown-item" href="#">Link 3</a>
-                                                                  </div>
+                                                        <button class="btn btn-success btn-sm rounded-0 dropdown-toggle"
+                                                            type="button" data-toggle="dropdown" data-placement="top"
+                                                            title="Add Album"><i class="fa fa-plus"></i></button>
+                                                        <div class="dropdown-menu" id="listalbum">
+                                                            <p>Thêm vào album</p>
+                                                        </div>
                                                     </li>
                                                     <li class="list-inline-item">
                                                         <button class="btn btn-success btn-sm rounded-0" type="button"
@@ -496,7 +543,7 @@
                                                 </ul>
                                             </td>
                                         </tr>
-                               
+
                                         <!-- Col -->
                                         <tr>
                                             <td>1</td>
@@ -506,14 +553,12 @@
                                                 <!-- Call to action buttons -->
                                                 <ul class="list-inline m-0">
                                                     <li class="list-inline-item">
-                                                        <button class="btn btn-success btn-sm rounded-0 dropdown-toggle" type="button"
-                                                            data-toggle="dropdown" data-placement="top" title="Add Album"><i
-                                                                class="fa fa-plus"></i></button>
-                                                                <div class="dropdown-menu">
-                                                                    <a class="dropdown-item" href="#">Link 1</a>
-                                                                    <a class="dropdown-item" href="#">Link 2</a>
-                                                                    <a class="dropdown-item" href="#">Link 3</a>
-                                                                  </div>
+                                                        <button class="btn btn-success btn-sm rounded-0 dropdown-toggle"
+                                                            type="button" data-toggle="dropdown" data-placement="top"
+                                                            title="Add Album"><i class="fa fa-plus"></i></button>
+                                                        <div class="dropdown-menu" id="listalbum">
+                                                            <p>Thêm vào album</p>
+                                                        </div>
                                                     </li>
                                                     <li class="list-inline-item">
                                                         <button class="btn btn-success btn-sm rounded-0" type="button"

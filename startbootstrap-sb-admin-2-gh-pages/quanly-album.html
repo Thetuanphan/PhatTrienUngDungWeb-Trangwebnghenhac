@@ -69,8 +69,13 @@
                 $("albumid").val("");
                 $("#albumname").val("");
                 $("#albumimg").val("");
-               
+
             });
+            //tạo album
+            $("button[title='Upload']").click(function () {
+                createalbum();
+            }); 
+
         }
         function search() {
             var keyword = document.getElementById("searchfor").value;
@@ -95,12 +100,12 @@
                     }
                 }
             }
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectalbum&keyword="+keyword, true);
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectalbum&keyword=" + keyword, true);
             xhttp.send();
         }
         //thêm cột ảo
         function visualrow() {
-            for (var i = 3; i <= 100 ; i++) {
+            for (var i = 3; i <= 100; i++) {
                 $("#dataTable tbody").append("<tr>" + $("#dataTable tbody tr:first").html() + "</tr>");
                 document.getElementById("dataTable").rows[i].style.display = "none"
             }
@@ -115,6 +120,19 @@
                 }
             }
 
+        }
+        //thêm album
+        function createalbum() {
+            var manguoidung = getCookie("mand");
+            var tenalbum = document.getElementById("albumname").value;
+            var linkalbum = document.getElementById("albumimg").value;
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                var x = this.responseText;
+                alert(x);
+            }
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addalbum&tenalbum=" + tenalbum + "&linkanh=" + linkalbum + "&manguoidung=" + manguoidung, true);
+            xhttp.send();
         }
 
     </script>

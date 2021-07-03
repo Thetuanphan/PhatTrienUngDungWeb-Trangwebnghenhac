@@ -62,6 +62,14 @@
     elseif($action=="updatesong"){
         updatesong($id);
     }
+    //thêm bài hát vào album
+    elseif($action == "addsongintoalbum"){
+        addsongintoalbum();
+    }
+    //thêm album
+    elseif($action == "addalbum"){
+        addalbum();
+    }
 
     //funtion---------------------------------------------------------------------------------------------------------------------------
     //funtion login ajax
@@ -298,7 +306,66 @@
         $link = preg_replace('/\/file\/d\/(.+)\/(.+)/',"/uc?export=download&id=$1", $link);
         return $link;
     }
+    //function thêm bài hát vào album
+    function addsongintoalbum(){
+        $mabaihat = $_GET['mabaihat'];
+        $maalbum = $_GET['maalbum'];
 
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "wednhac";       
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+            }
+
+        $sql = "INSERT INTO `ct_baihatalbum`(`MaAlbum`, `MaBaiHat`) VALUES ('".$maalbum."','".$mabaihat."')";
+        echo $sql;
+        die();
+
+        if ($conn->query($sql) === TRUE) {
+             echo "Đăng ký thành công";
+        } else {
+            echo "Đăng ký thất bài";
+        }
+
+        $conn->close();
+    }
+    //function thêm album 
+    function addalbum(){
+        $tenalbum = $_GET['tenalbum'];
+        $linkanh = $_GET['linkanh'];
+        $manguoidung =$_GET['manguoidung'];
+
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "wednhac";       
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+            }
+         //http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addalbum&tenalbum=1&linkanh=1&manguoidung=1
+        //INSERT INTO `album`( `TenAlbum`, `LinkHinhAnh`, `ChuDe`) VALUES ('[value-1]','[value-2]','[value-3]')
+        $sql = "INSERT INTO `album`( `TenAlbum`, `LinkHinhAnh`, `ChuDe`) VALUES ('".$tenalbum."','".$linkanh."','".$manguoidung."')";
+        echo $sql;
+        die();
+
+        if ($conn->query($sql) === TRUE) {
+             echo "1";
+        } else {
+            echo "0";
+        }
+
+        $conn->close();
+    }
     
 
           
