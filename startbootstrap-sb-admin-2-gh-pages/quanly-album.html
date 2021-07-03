@@ -12,7 +12,7 @@
     <title>Quản lý Album</title>
 
     <!-- Favicon -->
-	<link href="./img/logo/MS_64.png" rel="shorcut icon"/>
+    <link href="./img/logo/MS_64.png" rel="shorcut icon" />
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -28,9 +28,99 @@
 
     <script src="js/add-id.js"></script>
 
+    <script>
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        function onload() {
+            var tk = getCookie("tk");
+            var avatar = getCookie("ava");
+
+            $("#img-profile").attr("src", avatar);
+            $("#name-profile").text(tk);
+            search();
+            //select length row table 10 25 50 100
+            $(document).ready(function () {
+                $("select[name='dataTable_length']").change(function () {
+                    visualrow();
+                    var x = $("select[name='dataTable_length']").val();
+                    showlength(x);
+                    search();
+                });
+            });
+            //gọi hàm search keyword
+            $("#searchfor").keyup(function () {
+                search();
+            });
+            //button refersh
+            $("#refresh").click(function () {
+                $("albumid").val("");
+                $("#albumname").val("");
+                $("#albumimg").val("");
+               
+            });
+        }
+        function search() {
+            var keyword = document.getElementById("searchfor").value;
+            var row = $("select[name='dataTable_length']").val();
+            if (row == undefined) {
+                row = 2;
+            }
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var listsearchResult = JSON.parse(this.responseText);
+                    var length = listsearchResult.length;
+                    for (var x = 1; x <= row; x++) {
+                        if (x <= length) {
+                            document.getElementById("dataTable").rows[x].style.display = "table-row";
+                            document.getElementById("dataTable").rows[x].cells[0].innerHTML = listsearchResult[x - 1].MaAlbum;
+                            document.getElementById("dataTable").rows[x].cells[1].innerHTML = listsearchResult[x - 1].TenAlbum;
+                        }
+                        else {
+                            document.getElementById("dataTable").rows[x].style.display = "none";
+                        }
+                    }
+                }
+            }
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectalbum&keyword="+keyword, true);
+            xhttp.send();
+        }
+        //thêm cột ảo
+        function visualrow() {
+            for (var i = 3; i <= 100 ; i++) {
+                $("#dataTable tbody").append("<tr>" + $("#dataTable tbody tr:first").html() + "</tr>");
+                document.getElementById("dataTable").rows[i].style.display = "none"
+            }
+        }
+        function showlength(length) {
+            for (var i = 1; i <= 100; i++) {
+                if (i <= length) {
+                    document.getElementById("dataTable").rows[i].style.display = "table-row";
+                }
+                else {
+                    document.getElementById("dataTable").rows[i].style.display = "none";
+                }
+            }
+
+        }
+
+    </script>
 </head>
 
-<body id="page-top">
+<body id="page-top" onload="onload()">
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -63,7 +153,7 @@
                 Interface
             </div>
 
-            
+
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
@@ -111,7 +201,7 @@
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
+                                aria-label="Search" aria-describedby="basic-addon2" id="searchfor">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
@@ -147,20 +237,20 @@
                             </div>
                         </li>
 
-                       
+
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="name-profile">Douglas
+                                    McGee</span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg" id="img-profile">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                
-                                
+
+
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
@@ -181,15 +271,18 @@
                         <p> Nhập tên album mới: </p>
 
                         <div class="row">
-                            <input class="form-control" type="text" placeholder="Mã Album">
-                            <input class="form-control" type="text" placeholder="Tên Album">
-                            <input class="form-control" type="text" placeholder="Link hình ảnh">
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Upload"><i class="fa fa-plus"></i></button>
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Refresh"><i class="fa fa-sync"></i></button>
+                            <input class="form-control" type="hidden" placeholder="Mã Album" id="albumid">
+                            <input class="form-control" type="text" placeholder="Tên Album" id="albumname">
+                            <input class="form-control" type="text" placeholder="Link hình ảnh" id="albumimg">
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                data-placement="top" title="Upload"><i class="fa fa-plus"></i></button>
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                data-placement="top" title="Refresh" id="refresh"><i class="fa fa-sync"></i></button>
 
                         </div>
-                        
+
                     </div>
 
                     <div class="add-baihatalbum">
@@ -198,18 +291,21 @@
                             <input class="form-control" type="text" placeholder="Mã Album">
 
                             <div class="dropdown show">
-                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                  Tên bài hát
+                                <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                    id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    Tên bài hát
                                 </a>
-                              
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                  <a class="dropdown-item" href="#">Song 1</a>
-                                  <a class="dropdown-item" href="#">Song 2</a>
-                                  <a class="dropdown-item" href="#">Song 3</a>
-                                </div>
-                              </div>
 
-                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-plus"></i></button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Song 1</a>
+                                    <a class="dropdown-item" href="#">Song 2</a>
+                                    <a class="dropdown-item" href="#">Song 3</a>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
+                                data-placement="top" title="Edit"><i class="fa fa-plus"></i></button>
 
                         </div>
                     </div>
@@ -221,7 +317,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th width="10%">STT</th>
@@ -243,8 +339,8 @@
                                             <td>1</td>
                                             <td>Album001</td>
                                             <td>Song001</td>
-                                                <!-- Call to action buttons -->
-                                           
+                                            <!-- Call to action buttons -->
+
                                             </td>
                                         </tr>
 
@@ -253,11 +349,11 @@
                                             <td>2</td>
                                             <td>Album002</td>
                                             <td>Song002</td>
-                                                <!-- Call to action buttons -->
-                                            
+                                            <!-- Call to action buttons -->
+
                                             </td>
                                         </tr>
-                                        
+
                                     </tbody>
                                 </table>
                             </div>
@@ -268,135 +364,143 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Danh sách album</h6>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th width="10%">STT</th>
-                                            <th width="70%">Tên Album</th>
-                                            <th width="20%">Chỉnh sửa</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th width="10%">STT</th>
-                                            <th width="70%">Tên Album</th>
-                                            <th width="20%">Chỉnh sửa</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th width="10%">STT</th>
+                                                <th width="70%">Tên Album</th>
+                                                <th width="20%">Chỉnh sửa</th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th width="10%">STT</th>
+                                                <th width="70%">Tên Album</th>
+                                                <th width="20%">Chỉnh sửa</th>
+                                            </tr>
+                                        </tfoot>
+                                        <tbody>
 
-                                        <!-- Col -->
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Album 1</td>
-                                            <td>
-                                                <!-- Call to action buttons -->
-                                            <ul class="list-inline m-0">
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                                </li>
-                                            </ul>
-                                            </td>
-                                        </tr>
+                                            <!-- Col -->
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Album 1</td>
+                                                <td>
+                                                    <!-- Call to action buttons -->
+                                                    <ul class="list-inline m-0">
+                                                        <li class="list-inline-item">
+                                                            <button class="btn btn-success btn-sm rounded-0"
+                                                                type="button" data-toggle="tooltip" data-placement="top"
+                                                                title="Edit"><i class="fa fa-edit"></i></button>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <button class="btn btn-danger btn-sm rounded-0"
+                                                                type="button" data-toggle="tooltip" data-placement="top"
+                                                                title="Delete"><i class="fa fa-trash"></i></button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
 
-                                        <!-- Col -->
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Album 1</td>
-                                            <td>
-                                                <!-- Call to action buttons -->
-                                            <ul class="list-inline m-0">
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
-                                                </li>
-                                            </ul>
-                                            </td>
-                                        </tr>
-                                        
-                                    </tbody>
-                                </table>
+                                            <!-- Col -->
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Album 1</td>
+                                                <td>
+                                                    <!-- Call to action buttons -->
+                                                    <ul class="list-inline m-0">
+                                                        <li class="list-inline-item">
+                                                            <button class="btn btn-success btn-sm rounded-0"
+                                                                type="button" data-toggle="tooltip" data-placement="top"
+                                                                title="Edit"><i class="fa fa-edit"></i></button>
+                                                        </li>
+                                                        <li class="list-inline-item">
+                                                            <button class="btn btn-danger btn-sm rounded-0"
+                                                                type="button" data-toggle="tooltip" data-placement="top"
+                                                                title="Delete"><i class="fa fa-trash"></i></button>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
+
                     </div>
+                    <!-- /.container-fluid -->
 
                 </div>
-                <!-- /.container-fluid -->
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; Your Website 2020</span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- End of Footer -->
 
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+        <!-- Logout Modal-->
+        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <a class="btn btn-primary" href="login.html">Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-    <script>
-        $(document).ready(function(){
-            $("label > input").attr('id', 'search')
-        });
-    </script>
+        <!-- Page level custom scripts -->
+        <script src="js/demo/datatables-demo.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                $("label > input").attr('id', 'search')
+            });
+        </script>
 
 </body>
 

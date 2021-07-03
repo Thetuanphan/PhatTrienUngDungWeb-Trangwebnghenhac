@@ -37,6 +37,13 @@
         $stringsql ="SELECT * FROM `baihat` WHERE `TenBaiHat` LIKE '%".$keyword."%' or`TenCaSi`  LIKE '%".$keyword."%'";
         select($stringsql);
     }
+    //tải danh sách album
+    elseif($action=="selectalbum"){
+        //http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectalbum
+        $keyword = $_GET['keyword'];
+        $stringsql ="SELECT * FROM `album` WHERE `TenAlbum` like '%".$keyword."%'";
+        select($stringsql);
+    }
     //thêm bài hát
     elseif($action=="createsong"){
         createsong();
