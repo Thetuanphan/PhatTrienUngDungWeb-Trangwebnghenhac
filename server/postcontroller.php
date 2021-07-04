@@ -62,6 +62,10 @@
     elseif($action=="updatesong"){
         updatesong($id);
     }
+    //update album
+    elseif($action=="updatealbum"){
+        updatealbum();
+    }
     //thêm bài hát vào album
     elseif($action == "addsongintoalbum"){
         addsongintoalbum();
@@ -69,6 +73,12 @@
     //thêm album
     elseif($action == "addalbum"){
         addalbum();
+    }
+     //roll dữ liệu chuẩn bị update
+     elseif($action=="editalbum"){
+        $id = $_GET['id'];
+        $stringsql ="SELECT * FROM `album` WHERE `MaAlbum` = ".$id."";
+        select($stringsql);
     }
 
     //funtion---------------------------------------------------------------------------------------------------------------------------
@@ -133,7 +143,6 @@
         die("Connection failed: " . $conn->connect_error);
         }
         $sql = "".$stringsql."";
- 
         $result = $conn->query($sql);
        
         //http://localhost/Music-Media-Website/server/postcontroller.php?action=search
@@ -291,8 +300,7 @@
          }
 
         $sql = "UPDATE `baihat` SET `TenBaiHat`='".$songname."',`TenCaSi`='".$singername."',`LinkBaiHat`='".$linksong."',`HinhAnh`='".$linkimage."' WHERE `MaBaiHat` =".$id."";
-        echo $sql;
-         die();
+       
         if ($conn->query($sql) === TRUE) {         
             echo "bài hát ".$id." update thành công";
           } else {
@@ -324,8 +332,7 @@
             }
 
         $sql = "INSERT INTO `ct_baihatalbum`(`MaAlbum`, `MaBaiHat`) VALUES ('".$maalbum."','".$mabaihat."')";
-        echo $sql;
-        die();
+       
 
         if ($conn->query($sql) === TRUE) {
              echo "Đăng ký thành công";
@@ -355,8 +362,7 @@
          //http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addalbum&tenalbum=1&linkanh=1&manguoidung=1
         //INSERT INTO `album`( `TenAlbum`, `LinkHinhAnh`, `ChuDe`) VALUES ('[value-1]','[value-2]','[value-3]')
         $sql = "INSERT INTO `album`( `TenAlbum`, `LinkHinhAnh`, `ChuDe`) VALUES ('".$tenalbum."','".$linkanh."','".$manguoidung."')";
-        echo $sql;
-        die();
+     
 
         if ($conn->query($sql) === TRUE) {
              echo "1";
@@ -365,6 +371,36 @@
         }
 
         $conn->close();
+    }
+    //update album
+    function updatealbum(){  
+        // Using database connection file here
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "wednhac";
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+         die("Connection failed: " . $conn->connect_error);
+        }
+         $id = $_GET['id'];
+         $albumname = $_GET['albumname'];
+         $albumimg = $_GET['albumimg'];
+
+         $sql = "UPDATE `album` SET`TenAlbum`='".$albumname."',`LinkHinhAnh`='".$albumimg."' WHERE `MaAlbum` = ".$id."";
+        echo $sql;
+        die();
+        
+        if ($conn->query($sql) === TRUE) {         
+            echo "bài hát ".$id." update thành công";
+          } else {
+            echo "";
+          }
+          
+          
     }
     
 

@@ -44,7 +44,7 @@
                 deletesong(index);
                 search();
             });
-            //edit bai hat
+            //roll data edit bai hat
             $("button[title='Edit']").click(function () {
                 var x = $(this).parents("tr").find("td:first").text();
                 $("#songid").val(x);
@@ -68,7 +68,7 @@
                 $("select[name='dataTable_length']").change(function () {
                     visualrow();
                     search();
-                addintoalbum();
+                    addintoalbum();
 
 
                     var numberrow = $("select[name='dataTable_length']").val();
@@ -316,6 +316,7 @@
             xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addsongintoalbum&mabaihat=" + idsong + "&maalbum=" + idalbum + "", true);
             xhttp.send();
         }
+ 
     </script>
 
 </head>

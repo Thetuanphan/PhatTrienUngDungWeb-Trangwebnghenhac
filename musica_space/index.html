@@ -1,60 +1,88 @@
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
 	<title>Musica Space</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="SolMusic HTML Template">
 	<meta name="keywords" content="music, html">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<!-- Favicon -->
-	<link href="./img/logo/MS_64.png" rel="shortcut icon"/>
+	<link href="./img/logo/MS_64.png" rel="shortcut icon" />
 
 	<!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap" rel="stylesheet">
- 
+	<link
+		href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+		rel="stylesheet">
+
 	<!-- Stylesheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
-	<link rel="stylesheet" href="css/slicknav.min.css"/>
-	<link rel="stylesheet" href="css/header.css"/>
-	<link rel="stylesheet" href="css/footer.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/owl.carousel.min.css" />
+	<link rel="stylesheet" href="css/slicknav.min.css" />
+	<link rel="stylesheet" href="css/header.css" />
+	<link rel="stylesheet" href="css/footer.css" />
 
 	<!-- Main Stylesheets -->
-	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/style.css" />
 
 
 	<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-
+	<script>
+		function onload() {
+			checkuser();
+		}
+		function getCookie(cname) {
+			let name = cname + "=";
+			let decodedCookie = decodeURIComponent(document.cookie);
+			let ca = decodedCookie.split(';');
+			for (let i = 0; i < ca.length; i++) {
+				let c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
+		function checkuser() {
+			if (getCookie("mand") != "") {
+				$(".last-li a").text("welcome linh");
+			}
+		}
+	</script>
 </head>
-<body>
+
+<body onload="onload()">
 	<!-- Page Preloder -->
-	<div id="preloder">
+	<div id="preloder" >
 		<div class="loader"></div>
 	</div>
 
 	<!-- Header section -->
-	<div class="wrapper fixed-top">
+	<div class="wrapper fixed-top" >
 		<header>
-		   <nav>
-			  <div class="menu-icon">
-				 <i class="fa fa-bars fa-2x"></i>
-			  </div>
-			  <div class="menu">
-				 <ul>
-					<li class="first-li"><a href="./index.html">Home</a></li>
-					<li><a href="./playlist.html">Playlist</a></li>
-					<li><a href="./contact.html">Contact</a></li>
-					<li class="last-li"><a href="./login.html">Login</a></li>
-				 </ul>
-			  </div>
-		   </nav>
+			<nav>
+				<div class="menu-icon">
+					<i class="fa fa-bars fa-2x"></i>
+				</div>
+				<div class="menu">
+					<ul>
+						<li class="first-li"><a href="./index.html">Home</a></li>
+						<li><a href="./playlist.html">Playlist</a></li>
+						<li><a href="./contact.html">Contact</a></li>
+						<li class="last-li"><a href="./login.html">Login</a></li>
+					</ul>
+				</div>
+			</nav>
 		</header>
-	 </div>
+	</div>
 	<!-- Header section end -->
 
 	<!-- Hero section -->
@@ -66,7 +94,9 @@
 						<div class="col-lg-6">
 							<div class="hs-text">
 								<h2><span>Music</span> for everyone.</h2>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. </p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+									incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices
+									gravida. </p>
 								<a href="#" class="site-btn">Download Now</a>
 								<a href="#" class="site-btn sb-c2">Start free trial</a>
 							</div>
@@ -85,7 +115,9 @@
 						<div class="col-lg-6">
 							<div class="hs-text">
 								<h2><span>Listen </span> to new music.</h2>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. </p>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+									incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices
+									gravida. </p>
 								<a href="#" class="site-btn">Download Now</a>
 								<a href="#" class="site-btn sb-c2">Start free trial</a>
 							</div>
@@ -102,7 +134,7 @@
 	</section>
 	<!-- Hero section end -->
 
-	
+
 
 	<!-- Premium section end -->
 	<section class="premium-section spad">
@@ -114,7 +146,10 @@
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+					<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+						Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel
+						facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+						incididunt ut labore et dolore magna aliqua.</p>
 				</div>
 			</div>
 			<div class="row">
@@ -153,12 +188,12 @@
 
 	<!-- Footer section -->
 	<footer class="footer-section sticky-bottom">
-		<div  class="container content-center scale-1-2">
-					<img src="./img/logo/MS.png" alt="" id="">
+		<div class="container content-center scale-1-2">
+			<img src="./img/logo/MS.png" alt="" id="">
 		</div>
 	</footer>
 	<!-- Footer section end -->
-	
+
 	<!--====== Javascripts & Jquery ======-->
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -168,5 +203,6 @@
 	<script src="js/main.js"></script>
 	<script src="js/header.js"></script>
 
-	</body>
+</body>
+
 </html>

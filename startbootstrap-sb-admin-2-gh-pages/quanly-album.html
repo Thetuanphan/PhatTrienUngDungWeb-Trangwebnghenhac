@@ -74,8 +74,16 @@
             //tạo album
             $("button[title='Upload']").click(function () {
                 createalbum();
-            }); 
+            });
 
+            $("button[title='Edit']").click(function () {
+                var x = $(this).parents("tr").find("td:first").text();
+                $("#albumid").val(x);
+                loadDoc(x);
+            });
+            $("#logout").click(function () {
+                window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/login.html";
+            });
         }
         function search() {
             var keyword = document.getElementById("searchfor").value;
@@ -123,16 +131,64 @@
         }
         //thêm album
         function createalbum() {
-            var manguoidung = getCookie("mand");
-            var tenalbum = document.getElementById("albumname").value;
-            var linkalbum = document.getElementById("albumimg").value;
+            if (checkvalidalbum()) {
+                var manguoidung = getCookie("mand");
+                var tenalbum = document.getElementById("albumname").value;
+                var linkalbum = document.getElementById("albumimg").value;
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    var x = this.responseText;
+                    alert(x);
+                }
+                xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addalbum&tenalbum=" + tenalbum + "&linkanh=" + linkalbum + "&manguoidung=" + manguoidung, true);
+                xhttp.send();
+            }
+        }
+
+        //load thông tin album chuẩn bị edit
+        function loadDoc(index) {
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
-                var x = this.responseText;
-                alert(x);
+                var listsearchResult = JSON.parse(this.responseText);
+                $("#albumid").val(listsearchResult[0].MaAlbum);
+                $("#albumname").val(listsearchResult[0].TenAlbum);
+                $("#albumimg").val(listsearchResult[0].LinkHinhAnh);
             }
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addalbum&tenalbum=" + tenalbum + "&linkanh=" + linkalbum + "&manguoidung=" + manguoidung, true);
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=editalbum&id=" + index, true);
             xhttp.send();
+        }
+        function updatealbum() {
+            var id = $("#albumid").val();
+            var albumname = document.getElementById("albumname").value;
+            var albumimg = document.getElementById("albumimg").value;
+            if (checkvalidalbum()) {
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        alert(this.responseText);
+                    }
+                }
+                xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=updatealbum&id=" + id + "&albumname=" + albumname + "&albumimg=" + albumimg, true);
+                xhttp.send();
+            }
+            loadDoc(id);
+        }
+
+        //kiểm tra ko được để trống thông tin nhập
+        function checkvalidalbum() {
+            var albumname = document.getElementById("albumname").value;
+            var albumimg = document.getElementById("albumimg").value;
+
+            if (albumname == "") {
+                alert("Vui lòng nhập tên album");
+                return false
+            }
+            if (albumimg.length > 200) {
+                alert("link quá dài");
+                return false;
+            }
+            return true;
         }
 
     </script>
@@ -295,7 +351,8 @@
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
                                 data-placement="top" title="Upload"><i class="fa fa-plus"></i></button>
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                data-placement="top" title="Edit"><i class="fa fa-edit"
+                                    onclick="updatealbum()"></i></button>
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
                                 data-placement="top" title="Refresh" id="refresh"><i class="fa fa-sync"></i></button>
 

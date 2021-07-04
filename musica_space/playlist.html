@@ -1,37 +1,95 @@
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
 	<title>Playlist</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="SolMusic HTML Template">
 	<meta name="keywords" content="music, html">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<!-- Favicon -->
-	<link href="./img/logo/MS_64.png" rel="shorcut icon"/>
+	<link href="./img/logo/MS_64.png" rel="shorcut icon" />
 
 	<!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap" rel="stylesheet">
- 
+	<link
+		href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+		rel="stylesheet">
+
 	<!-- Stylesheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
-	<link rel="stylesheet" href="css/slicknav.min.css"/>
-	<link rel="stylesheet" href="css/header.css"/>
-	<link rel="stylesheet" href="css/footer.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/owl.carousel.min.css" />
+	<link rel="stylesheet" href="css/slicknav.min.css" />
+	<link rel="stylesheet" href="css/header.css" />
+	<link rel="stylesheet" href="css/footer.css" />
 
 	<!-- Main Stylesheets -->
-	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/style.css" />
 
 
 	<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script>
+		function onload() {
+			checkuser();
+			loadlistalbum();
+		}
+		function getCookie(cname) {
+			let name = cname + "=";
+			let decodedCookie = decodeURIComponent(document.cookie);
+			let ca = decodedCookie.split(';');
+			for (let i = 0; i < ca.length; i++) {
+				let c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
+		function checkuser() {
+			if (getCookie("mand") != "") {
+				$(".last-li a").text("welcome linh");
+			}
+		}
+		//load ds album
+		function loadlistalbum() {
+			const xhttp = new XMLHttpRequest();
+			xhttp.onload = function () {
+				var listsearchResult = JSON.parse(this.responseText);
+				var length = listsearchResult.length;
+				var i = 0;
+				//add thêm cho đủ số lượng album
+				var x = $(".playlist-area").html();
+				for (var y = 0; y < length - 1; y++) {
+					$(".playlist-area").append(x);
+				}
+				//thêm thông tin vào album
+				var link = $(".playlist-item a").attr("href");
+				$(".playlist-area div a img").each(function () {
+					if (i < length) {
+						$(this).attr("src", listsearchResult[i].LinkHinhAnh);
+						$(this).next().text(listsearchResult[i].TenAlbum);
 
+						var idalbum = link + "?id="+listsearchResult[i].MaAlbum;
+						$(this).parent().attr("href", idalbum);
+						i++;
+					}
+				});
+
+			}
+			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=selectalbumuser", true);
+			xhttp.send();
+		}
+	</script>
 </head>
-<body>
+
+<body onload="onload()">
 	<!-- Page Preloder -->
 	<div id="preloder">
 		<div class="loader"></div>
@@ -40,21 +98,21 @@
 	<!-- Header section -->
 	<div class="wrapper fixed-top">
 		<header>
-		   <nav>
-			  <div class="menu-icon">
-				 <i class="fa fa-bars fa-2x"></i>
-			  </div>
-			  <div class="menu">
-				 <ul>
-					<li class="first-li"><a href="./index.html">Home</a></li>
-					<li><a href="./playlist.html">Playlist</a></li>
-					<li><a href="./contact.html">Contact</a></li>
-					<li class="last-li"><a href="./login.html">Login</a></li>
-				 </ul>
-			  </div>
-		   </nav>
+			<nav>
+				<div class="menu-icon">
+					<i class="fa fa-bars fa-2x"></i>
+				</div>
+				<div class="menu">
+					<ul>
+						<li class="first-li"><a href="./index.html">Home</a></li>
+						<li><a href="./playlist.html">Playlist</a></li>
+						<li><a href="./contact.html">Contact</a></li>
+						<li class="last-li"><a href="./login.html">Login</a></li>
+					</ul>
+				</div>
+			</nav>
 		</header>
-	 </div>
+	</div>
 	<!-- Header section end -->
 
 	<!-- <section class="help-section spad">
@@ -87,47 +145,52 @@
 					<li class="control" data-filter=".uk">US - UK</li>
 					<li class="control" data-filter=".asia">ASIA</li>
 				</ul>
-			</div>                                              
+			</div>
 			<div class="clearfix"></div>
 			<div class="row playlist-area">
 
 				<div class="mix col-lg-3 col-md-4 col-sm-6 vietnam">
 					<div class="playlist-item">
 						<a href="./in-playlist.html">
-						<img src="./img/playlist/1.jpg" alt="">
-						<h5>V-Pop Plus</h5></a>
+							<img src="./img/playlist/1.jpg" alt="" class="img-fluid">
+							<h5>V-Pop Plus</h5>
+						</a>
+					</div>
+				</div>
+				<!-- <div class="mix col-lg-3 col-md-4 col-sm-6 vietnam">
+					<div class="playlist-item">
+						<a href="./in-playlist.html">
+							<img src="./img/playlist/1.jpg" alt="">
+							<h5>V-Pop Plus</h5>
+						</a>
 					</div>
 				</div>
 				<div class="mix col-lg-3 col-md-4 col-sm-6 vietnam">
 					<div class="playlist-item">
 						<a href="./in-playlist.html">
-						<img src="./img/playlist/1.jpg" alt="">
-						<h5>V-Pop Plus</h5></a>
+							<img src="./img/playlist/1.jpg" alt="">
+							<h5>V-Pop Plus</h5>
+						</a>
 					</div>
 				</div>
 				<div class="mix col-lg-3 col-md-4 col-sm-6 vietnam">
 					<div class="playlist-item">
 						<a href="./in-playlist.html">
-						<img src="./img/playlist/1.jpg" alt="">
-						<h5>V-Pop Plus</h5></a>
+							<img src="./img/playlist/1.jpg" alt="">
+							<h5>V-Pop Plus</h5>
+						</a>
 					</div>
 				</div>
 				<div class="mix col-lg-3 col-md-4 col-sm-6 vietnam">
 					<div class="playlist-item">
 						<a href="./in-playlist.html">
-						<img src="./img/playlist/1.jpg" alt="">
-						<h5>V-Pop Plus</h5></a>
+							<img src="./img/playlist/1.jpg" alt="">
+							<h5>V-Pop Plus</h5>
+						</a>
 					</div>
-				</div>
-				<div class="mix col-lg-3 col-md-4 col-sm-6 vietnam">
-					<div class="playlist-item">
-						<a href="./in-playlist.html">
-						<img src="./img/playlist/1.jpg" alt="">
-						<h5>V-Pop Plus</h5></a>
-					</div>
-				</div>
-				
-				
+				</div> -->
+
+
 			</div>
 		</div>
 	</section>
@@ -135,12 +198,12 @@
 
 	<!-- Footer section -->
 	<footer class="footer-section sticky-bottom">
-		<div  class="container content-center scale-1-2">
-					<img src="./img/logo/MS.png" alt="" id="">
+		<div class="container content-center scale-1-2">
+			<img src="./img/logo/MS.png" alt="" id="">
 		</div>
 	</footer>
 	<!-- Footer section end -->
-	
+
 	<!--====== Javascripts & Jquery ======-->
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -150,5 +213,6 @@
 	<script src="js/main.js"></script>
 	<script src="js/header.js"></script>
 
-	</body>
+</body>
+
 </html>
