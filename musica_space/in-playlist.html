@@ -35,7 +35,8 @@
 	<script>
 		function onload() {
 			checkuser();
-			loadDoc();
+			//loadDoc();
+			
 		}
 		function getCookie(cname) {
 			let name = cname + "=";
@@ -80,18 +81,37 @@
 				for (var index = 0; index < length - 1; index++) {
 					$("#containersong").append("<div class='song-item'>" + item + "</div>");
 				}
+				
+				//chỉnh lại một số thuộc tính
+				var x = $(".song-item").find(".jplayer").attr("data-ancestor");
+				x = x.slice(1, 14);
 				//add nội dung vào item
 				$(".song-item").each(function () {
 					if (i < length) {
+						var idsong;
+						idsong = x + ""+listsearchResult[i].MaBaiHat+"";
+						$(this).find(".jplayer").attr("data-ancestor", "."+idsong);
+						$(this).find(".jplayer").attr("id", "jp_jplayer_" + listsearchResult[i].MaBaiHat);
+						//remove class
+						$(this).find(".jp-audio").removeClass("jp_container_1");
+						$(this).find(".jp-audio").addClass(idsong);
+						//img
+						var idimg ="jp_poster_"+listsearchResult[i].MaBaiHat;
+						$(this).find(".jp-jplayer img").attr("id", idimg);
 						$(this).find(".song-info-box img").attr("src", listsearchResult[i].HinhAnh);
+						//detail
 						$(this).find(".song-info h4").text(listsearchResult[i].TenBaiHat);
 						$(this).find(".song-info p").text(listsearchResult[i].TenCaSi);
-						$(this).find("#jp_audio_0").attr("src", listsearchResult[i].LinkBaiHat);
+						//audio
+						var idaudio ="jp_audio_"+listsearchResult[i].MaBaiHat;
+						$(this).find("div>audio").attr("id",idaudio);
+						$(this).find(".jp-jplayer").attr("data-url",listsearchResult[i].LinkBaiHat)
+						$(this).find("#"+idaudio+"").attr("src", listsearchResult[i].LinkBaiHat);
 						i++;
 					}
 				});
 			}
-			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=selectsonguser&idalbum="+idalbum, true);
+			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=selectsonguser&idalbum=" + idalbum, true);
 			xhttp.send();
 		}
 
@@ -160,7 +180,7 @@
 						<div class="single_player_container">
 							<div class="single_player">
 								<div class="jp-jplayer jplayer" data-ancestor=".jp_container_1"
-									data-url="music-files/Song1.mp3"></div>
+									data-url="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU"></div>
 								<div class="jp-audio jp_container_1" role="application" aria-label="media player">
 									<div class="jp-gui jp-interface">
 
@@ -207,6 +227,8 @@
 				</div>
 			</div>
 
+		
+		
 			<!-- <div class="site-pagination pt-5 mt-5">
 				<a href="#" class="active">01.</a>
 				<a href="#">02.</a>
