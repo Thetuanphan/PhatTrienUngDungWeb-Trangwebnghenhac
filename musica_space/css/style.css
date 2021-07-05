@@ -773,6 +773,24 @@ Blog page
 Contact page
  -------------------*/
 
+ .contact-section{
+	margin-top: 65px;
+ }
+
+ .section-map{
+	 max-width: 100%;
+	 text-align: center;
+	 margin-bottom: 50px;
+ }
+
+ .map-1{
+	max-width: 100%
+ }
+
+ .map-1 iframe{
+	 width: 80%;
+ }
+
 .map {
 	height: 100%;
 	background: #ddd;
@@ -787,7 +805,8 @@ Contact page
 }
 
 .contact-warp {
-	padding: 100px 53px 104px 78px;
+	padding: 50px 53px 0px 78px;
+	text-align: center;
 }
 
 .contact-warp p {
