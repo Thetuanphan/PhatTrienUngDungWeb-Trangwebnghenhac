@@ -98,6 +98,48 @@
 		</div>
 	</section>
 	<!-- Player section end -->
+	
+	<!-- Player section -->
+	<section class="player-section set-bg" data-setbg="">
+		<div class="player-box">
+			<div class="tarck-thumb-warp">
+				<div class="tarck-thumb">
+					<img src="img/wave-thumb.jpg" alt="">
+					<button onclick="wavesurfer.playPause();" class="wp-play"></button>
+				</div>
+			</div>
+			<div class="wave-player-warp">
+				<div class="row">
+					<div class="col-lg-8">
+						<div class="wave-player-info">
+							<h2>Michael Smith</h2>
+							<p>One Night in Ibiza</p>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="songs-links">
+							<a href=""><img src="img/icons/p-1.png" alt=""></a>
+							<a href=""><img src="img/icons/p-2.png" alt=""></a>
+							<a href=""><img src="img/icons/p-3.png" alt=""></a>
+						</div>
+					</div>
+				</div>
+				<div id="wavePlayer" class="clierfix">
+					<div id="audiowave" data-waveurl="./music-files/9.mp3"></div>
+					<div id="currentTime"></div>
+					<div id="clipTime"></div>
+					<!-- Player Controls -->
+					<div class="wavePlayer_controls">
+						<button class="jp-prev player_button" onclick="wavesurfer.skipBackward();"></button>
+						<button class="jp-play player_button" onclick="wavesurfer.playPause();"></button>
+						<button class="jp-next player_button" onclick="wavesurfer.skipForward();"></button>
+						<button class="jp-stop player_button" onclick="wavesurfer.stop();"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Player section end -->
 
 	<!-- Songs details section -->
 	<!-- Songs details section -->
