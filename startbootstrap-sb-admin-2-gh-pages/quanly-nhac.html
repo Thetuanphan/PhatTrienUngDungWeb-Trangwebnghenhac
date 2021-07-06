@@ -28,58 +28,25 @@
 
     <script>
         function onload() {
+            visualrow();
+            loadsong();
+            rollinfo();  
+            refresh();
+            rolldetail();
+            deletesong();
+           
+            //search
+            $("#searchfor").keyup(function () {
+                search();
+            });
+        }
 
+        function rollinfo() {
             var tk = getCookie("tk");
             var avatar = getCookie("ava");
 
             $("#img-profile").attr("src", avatar);
             $("#name-profile").text(tk);
-
-            $("#searchfor").keyup(function () {
-                search();
-            });
-            //xóa khi nhấn
-            $("button[title='Delete']").click(function () {
-                var index = $(this).parents("tr").find("td:first").text();
-                deletesong(index);
-                search();
-            });
-            //roll data edit bai hat
-            $("button[title='Edit']").click(function () {
-                var x = $(this).parents("tr").find("td:first").text();
-                $("#songid").val(x);
-                rolldata(x);
-            });
-
-            //refresh
-            $("#refresh").click(function () {
-                $("#songname").val("");
-                $("#singername").val("");
-                $("#linksong").val("");
-                $("#linkimage").val("");
-                $("#songid").val("");
-            });
-            //select length row table 10 25 50 100
-            $(document).ready(function () {
-                visualrow();
-                search();
-                loadalbum();
-
-                $("select[name='dataTable_length']").change(function () {
-                    visualrow();
-                    search();
-                    addintoalbum();
-
-
-                    var numberrow = $("select[name='dataTable_length']").val();
-                    showlength(numberrow);
-                });
-
-            });
-            //logout
-            $("#logout").click(function () {
-                window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/login.html";
-            });
         }
         function getCookie(cname) {
             let name = cname + "=";
@@ -96,121 +63,68 @@
             }
             return "";
         }
-
-        //thêm bài hát
-        function createsong() {
-
-            if (checkvalidsong()) {
-                var songname = document.getElementById("songname").value;
-                var singername = document.getElementById("singername").value;
-                var linksong = document.getElementById("linksong").value;
-                var linkimage = document.getElementById("linkimage").value;
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        if (this.responseText.trim() == "1") {
-                            alert("Thêm thành công");
-                        }
-                        else {
-                            alert("Thêm thất bại");
-                        }
-                    }
-                }
-                if (linkimage != "") {
-                    //send request has linkimage
-                    xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=createsong&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong + "&linkimage=" + linkimage, true);
-                    xhttp.send();
-                }
-                else {
-                    //send request hasn't linkimage
-                    xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=createsong&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong, true);
-                    xhttp.send();
-                }
-
-            }
-            document.getElementById("songname").value = "";
-            document.getElementById("singername").value = "";
-            document.getElementById("linksong").value = "";
-            document.getElementById("linkimage").value = "";
-            search();
-        }
-        //kiểm tra hợp lệ
-        function checkvalidsong() {
-            var songname = document.getElementById("songname").value;
-            var singername = document.getElementById("singername").value;
-            var linksong = document.getElementById("linksong").value;
-
-            if (songname == "") {
-                alert("Vui lòng nhập tên bài hát");
-                return false
-            }
-            if (singername == "") {
-                alert("Vui lòng nhập tên ca sĩ");
-                return false;
-            }
-            if (linksong == "") {
-                alert("Vui lòng nhập link bài hát");
-                return false;
-            }
-            if (linkimage.length > 200) {
-                alert("link quá dài");
-                return false;
-            }
-            return true;
-        }
-        //tìm kiếm bài hát -load bài hát khi tải trang
-        function search() {
-            var keyword = document.getElementById("searchfor").value;
-            var row = $("select[name='dataTable_length']").val();
-            if (row == undefined) {
-                row = 10;
-            }
+        function loadsong(keyword = "") {
             var xhttp = new XMLHttpRequest();
+            var numberrow = $("select[name='dataTable_length'] ").val();
+            if(numberrow==undefined){
+                numberrow=10;
+            }
             xhttp.onreadystatechange = function (ktra) {
                 if (this.readyState == 4 && this.status == 200) {
                     var listsearchResult = JSON.parse(this.responseText);
                     var length = listsearchResult.length;
-                    var i = 1;
-                    for (var x = 1; x <= row; x++) {
-                        if (x <= length) {
-                            document.getElementById("dataTable").rows[x].style.display = "table-row";
-                            document.getElementById("dataTable").rows[x].cells[0].innerHTML = listsearchResult[x - 1].MaBaiHat;
-                            document.getElementById("dataTable").rows[x].cells[1].innerHTML = listsearchResult[x - 1].TenBaiHat;
-                            document.getElementById("dataTable").rows[x].cells[2].innerHTML = listsearchResult[x - 1].TenCaSi;
+                    var i = 0;
+                    $("tbody tr").each(function () {
+                        if(i<numberrow){
+                            if (i < length) {
+                            //stt
+                            $(this).find("td:nth-child(1)").text(listsearchResult[i].MaBaiHat);
+                            //name song
+                            $(this).find("td:nth-child(2)").text(listsearchResult[i].TenBaiHat);
+                            //name singer
+                            $(this).find("td:nth-child(3)").text(listsearchResult[i].TenCaSi);
+                            
+                            document.getElementById("dataTable").rows[i + 1].style.display = "table-row";
                         }
                         else {
-                            document.getElementById("dataTable").rows[x].style.display = "none";
+                            document.getElementById("dataTable").rows[i + 1].style.display = "none";
+                           
                         }
-                        if (i == length) {
-                            var index = i + 1;
-                            while (index <= 100) {
-                                document.getElementById("dataTable").rows[index].style.display = "none";
-                                index++;
-                            }
-                        }
+                        i++;
                     }
+            
+                    });
                 }
             }
             //send request
             xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectsong&keyword=" + keyword, true);
             xhttp.send();
         }
-        //xóa bài hát
-        function deletesong(index) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var message = this.responseText;
-                    alert(message);
-                    window.location.reload();
-                }
-            };
-            //send request
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=delete&id=" + index, true);
-            xhttp.send();
+
+        //add thêm 99 cái ảo
+        function visualrow() {
+            var visualrow = "<tr>" + $("tbody tr:first").html() + "</tr>";
+            for (var i = 2; i <= 100; i++) {
+                $("#dataTable tbody").append(visualrow);
+                document.getElementById("dataTable").rows[i].style.display = "none"
+            }
         }
-        //edit
-        function rolldata(index) {
+        //search 
+        function search() {
+            var keyword = $("#searchfor").val();
+            loadsong(keyword);
+        }
+        function refresh() {
+            $("#refresh").click(function () {
+                $("#songname").val("");
+                $("#singername").val("");
+                $("#linksong").val("");
+                $("#linkimage").val("");
+                $("#songid").val("");
+            });
+        }
+        //roll data
+        function actionroll(index) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
@@ -224,6 +138,37 @@
             //send request
             xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=edit&id=" + index, true);
             xhttp.send();
+        }
+        function rolldetail() {
+            $("button[title='Edit']").click(function () {
+                var x = $(this).parents("tr").find("td:first").text();
+                $("#songid").val(x);
+                actionroll(x);
+            });
+        }
+        //xóa bài hát
+        function actiondelete(index) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var message = this.responseText;
+                    alert(message);
+                    //thêm toast
+                    alert("xóa thành công");
+                    window.location.reload();
+                }
+            };
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=delete&id=" + index, true);
+            xhttp.send();
+        }
+        function deletesong() {
+            $("button[title='Delete']").click(function () {
+                var index = $(this).parents("tr").find("td:first").text();
+                actiondelete(index);
+                //loadsong();
+
+            });
         }
         //update song
         function updatesong() {
@@ -250,7 +195,6 @@
                     xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=updatesong&mabaihat=" + id + "&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong, true);
                     xhttp.send();
                 }
-
             }
             document.getElementById("songname").value = "";
             document.getElementById("singername").value = "";
@@ -258,14 +202,75 @@
             document.getElementById("linkimage").value = "";
             $("#songid").val("");
         }
-        //and thêm 90 cái
-        function visualrow() {
-            for (var i = 3; i <= 100; i++) {
-                $("#dataTable tbody").append("<tr>" + $("tbody tr:first").html() + "</tr>");
-                document.getElementById("dataTable").rows[i].style.display = "none"
+        //kiểm tra hợp lệ
+        function checkvalidsong() {
+            var songname = document.getElementById("songname").value;
+            var singername = document.getElementById("singername").value;
+            var linksong = document.getElementById("linksong").value;
+
+            if (songname == "") {
+                alert("Vui lòng nhập tên bài hát");
+                return false
             }
+            if (singername == "") {
+                alert("Vui lòng nhập tên ca sĩ");
+                return false;
+            }
+            if (linksong == "") {
+                alert("Vui lòng nhập link bài hát");
+                return false;
+            }
+            if (linkimage.length > 200) {
+                alert("link quá dài");
+                return false;
+            }
+            return true;
         }
-        //chọn bao nhiêu thì hiện bao nhiêu 10 25 50 100
+        //thêm bài hát
+        function createsong() {
+            if (checkvalidsong()) {
+                var songname = document.getElementById("songname").value;
+                var singername = document.getElementById("singername").value;
+                var linksong = document.getElementById("linksong").value;
+                var linkimage = document.getElementById("linkimage").value;
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText.trim() == "1") {
+                            alert("Thêm thành công");
+                        }
+                        else {
+                            alert(this.responseText);
+                        }
+                    }
+                }
+                if (linkimage != "") {
+                    //send request has linkimage
+                    xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=createsong&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong + "&linkimage=" + linkimage, true);
+                    xhttp.send();
+                }
+                else {
+                    //send request hasn't linkimage
+                    xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=createsong&songname=" + songname + "&singername=" + singername + "&linksong=" + linksong, true);
+                    xhttp.send();
+                }
+
+            }
+            document.getElementById("songname").value = "";
+            document.getElementById("singername").value = "";
+            document.getElementById("linksong").value = "";
+            document.getElementById("linkimage").value = "";
+            search();
+        }
+
+        function changenumberrow() {
+          
+            $("select[name='dataTable_length'] ").change(function () {
+                var x = $("select[name='dataTable_length'] ").val();
+                showlength(x);
+                
+        });
+    }
         function showlength(length) {
             for (var i = 1; i <= 100; i++) {
                 if (i <= length) {
@@ -275,48 +280,7 @@
                     document.getElementById("dataTable").rows[i].style.display = "none";
                 }
             }
-
         }
-        function loadalbum() {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var listsearchResult = JSON.parse(this.responseText);
-                    var length = listsearchResult.length;
-                    for (var i = 0; i < length; i++) {
-                        var x = listsearchResult[i].TenAlbum;
-                        var id = listsearchResult[i].MaAlbum;
-                        $("div#listalbum").append("<a class=\"dropdown-item\" id=\"" + id + "\">" + x + "</a>");
-
-                    }
-                }
-                addintoalbum();
-            }
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectalbum", true);
-            xhttp.send();
-        }
-        function addintoalbum() {
-            $("td").find("a.dropdown-item").click(function () {
-                var idAlbum = $(this).attr("id");
-                var idSong = $(this).parents("tr").find("td:first").text();
-                addsongintoalbum(idSong, idAlbum);
-            });
-        }
-
-        function addsongintoalbum(idsong, idalbum) {
-
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var kq = this.responseText;
-                    alert(kq);
-                }
-            }
-            //send request
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addsongintoalbum&mabaihat=" + idsong + "&maalbum=" + idalbum + "", true);
-            xhttp.send();
-        }
- 
     </script>
 
 </head>
@@ -404,7 +368,7 @@
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
                                 aria-label="Search" aria-describedby="basic-addon2" id="searchfor">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
+                                <button class="btn btn-primary" type="button" onclick="search()">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
@@ -514,7 +478,6 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-
                                         <!-- Col -->
                                         <tr>
                                             <td>1</td>
@@ -545,35 +508,6 @@
                                             </td>
                                         </tr>
 
-                                        <!-- Col -->
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Album 1</td>
-                                            <td>Artist 1</td>
-                                            <td>
-                                                <!-- Call to action buttons -->
-                                                <ul class="list-inline m-0">
-                                                    <li class="list-inline-item">
-                                                        <button class="btn btn-success btn-sm rounded-0 dropdown-toggle"
-                                                            type="button" data-toggle="dropdown" data-placement="top"
-                                                            title="Add Album"><i class="fa fa-plus"></i></button>
-                                                        <div class="dropdown-menu" id="listalbum">
-                                                            <p>Thêm vào album</p>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <button class="btn btn-success btn-sm rounded-0" type="button"
-                                                            data-toggle="tooltip" data-placement="top" title="Edit"><i
-                                                                class="fa fa-edit"></i></button>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <button class="btn btn-danger btn-sm rounded-0" type="button"
-                                                            data-toggle="tooltip" data-placement="top" title="Delete"><i
-                                                                class="fa fa-trash"></i></button>
-                                                    </li>
-                                                </ul>
-                                            </td>
-                                        </tr>
 
                                     </tbody>
                                 </table>

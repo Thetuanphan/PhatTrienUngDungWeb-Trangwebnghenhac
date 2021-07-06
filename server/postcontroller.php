@@ -236,6 +236,8 @@
             }
         //INSERT INTO `baihat`(`MaBaiHat`, `TenBaiHat`, `TenCaSi`, `LinkBaiHat`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]')
         $sql = 'INSERT INTO `baihat`(`TenBaiHat`, `TenCaSi`, `LinkBaiHat`,`HinhAnh`) VALUES ("'.$songname.'","'.$singername.'","'.$linksong.'","'.$linkimage.'")'; 
+        echo $sql;
+        die();
         if ($conn->query($sql) === TRUE) {
              echo "1";
         } else {
@@ -300,7 +302,8 @@
          }
 
         $sql = "UPDATE `baihat` SET `TenBaiHat`='".$songname."',`TenCaSi`='".$singername."',`LinkBaiHat`='".$linksong."',`HinhAnh`='".$linkimage."' WHERE `MaBaiHat` =".$id."";
-       
+        echo $sql;
+        die();
         if ($conn->query($sql) === TRUE) {         
             echo "bài hát ".$id." update thành công";
           } else {

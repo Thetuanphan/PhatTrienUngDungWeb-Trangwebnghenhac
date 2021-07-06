@@ -35,8 +35,8 @@
 	<script>
 		function onload() {
 			checkuser();
-			//loadDoc();
-			
+			loadDoc();
+
 		}
 		function getCookie(cname) {
 			let name = cname + "=";
@@ -71,7 +71,6 @@
 			var idalbum = getidalbum();
 			const xhttp = new XMLHttpRequest();
 			xhttp.onload = function () {
-
 				var listsearchResult = JSON.parse(this.responseText);
 				var length = listsearchResult.length;
 				var i = 0;
@@ -81,32 +80,14 @@
 				for (var index = 0; index < length - 1; index++) {
 					$("#containersong").append("<div class='song-item'>" + item + "</div>");
 				}
-				
-				//chỉnh lại một số thuộc tính
-				var x = $(".song-item").find(".jplayer").attr("data-ancestor");
-				x = x.slice(1, 14);
+
 				//add nội dung vào item
 				$(".song-item").each(function () {
 					if (i < length) {
-						var idsong;
-						idsong = x + ""+listsearchResult[i].MaBaiHat+"";
-						$(this).find(".jplayer").attr("data-ancestor", "."+idsong);
-						$(this).find(".jplayer").attr("id", "jp_jplayer_" + listsearchResult[i].MaBaiHat);
-						//remove class
-						$(this).find(".jp-audio").removeClass("jp_container_1");
-						$(this).find(".jp-audio").addClass(idsong);
-						//img
-						var idimg ="jp_poster_"+listsearchResult[i].MaBaiHat;
-						$(this).find(".jp-jplayer img").attr("id", idimg);
-						$(this).find(".song-info-box img").attr("src", listsearchResult[i].HinhAnh);
-						//detail
 						$(this).find(".song-info h4").text(listsearchResult[i].TenBaiHat);
 						$(this).find(".song-info p").text(listsearchResult[i].TenCaSi);
-						//audio
-						var idaudio ="jp_audio_"+listsearchResult[i].MaBaiHat;
-						$(this).find("div>audio").attr("id",idaudio);
-						$(this).find(".jp-jplayer").attr("data-url",listsearchResult[i].LinkBaiHat)
-						$(this).find("#"+idaudio+"").attr("src", listsearchResult[i].LinkBaiHat);
+						//src
+						$(this).find("audio").attr("src", listsearchResult[i].LinkBaiHat);
 						i++;
 					}
 				});
@@ -179,10 +160,12 @@
 					<div class="col-lg-6">
 						<div class="single-container">
 							<audio controls>
-								
-								<source src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU" type="audio/mpeg">
-							  
-							  </audio>
+
+								<source
+									src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU"
+									type="audio/mpeg">
+
+							</audio>
 						</div>
 					</div>
 					<div class="col-lg-2">
@@ -195,8 +178,7 @@
 				</div>
 			</div>
 			<!-- song -->
-
-			<div class="song-item">
+			<!-- <div class="song-item">
 				<div class="row">
 					<div class="col-lg-4">
 						<div class="song-info-box">
@@ -226,11 +208,11 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 
-			
-		
-		
+
+
+
 			<!-- <div class="site-pagination pt-5 mt-5">
 				<a href="#" class="active">01.</a>
 				<a href="#">02.</a>
