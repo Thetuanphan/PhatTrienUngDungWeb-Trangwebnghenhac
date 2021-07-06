@@ -1426,6 +1426,10 @@ Artest Page
 	float: right;
 }
 
+.table-container{
+	width: 100%;
+}
+
 /* ----------------
 Responsive
  -------------------*/
