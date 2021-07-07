@@ -80,6 +80,9 @@
         $stringsql ="SELECT * FROM `album` WHERE `MaAlbum` = ".$id."";
         select($stringsql);
     }
+    elseif($action =="deletealbum"){
+        deletealbum();
+    }
 
     //funtion---------------------------------------------------------------------------------------------------------------------------
     //funtion login ajax
@@ -265,13 +268,10 @@
         
         // sql to delete a record
         $sql = "DELETE FROM `baihat` WHERE `MaBaiHat` = ".$id."";
-        echo $sql;
-        die();
-        
+
         if ($conn->query($sql) === TRUE) {
-          echo "delete product ".$Id." success";
+
         } else {
-          echo "Error deleting record: " . $conn->error;
       }
       $conn->close();
 
@@ -335,12 +335,13 @@
             }
 
         $sql = "INSERT INTO `ct_baihatalbum`(`MaAlbum`, `MaBaiHat`) VALUES ('".$maalbum."','".$mabaihat."')";
-       
+        echo $sql;
+        die();
 
         if ($conn->query($sql) === TRUE) {
-             echo "Đăng ký thành công";
+             echo "thêm thành công";
         } else {
-            echo "Đăng ký thất bài";
+            echo "thêm thất bài";
         }
 
         $conn->close();
@@ -365,7 +366,8 @@
          //http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addalbum&tenalbum=1&linkanh=1&manguoidung=1
         //INSERT INTO `album`( `TenAlbum`, `LinkHinhAnh`, `ChuDe`) VALUES ('[value-1]','[value-2]','[value-3]')
         $sql = "INSERT INTO `album`( `TenAlbum`, `LinkHinhAnh`, `ChuDe`) VALUES ('".$tenalbum."','".$linkanh."','".$manguoidung."')";
-     
+        echo $sql;
+        die();
 
         if ($conn->query($sql) === TRUE) {
              echo "1";
@@ -405,7 +407,34 @@
           
           
     }
-    
+    //delete album
+    function deletealbum(){
+        $id = $_GET['id'];
+
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "wednhac";
+        
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+        }
+        
+        // sql to delete a record
+        $sql = "SELECT * FROM `album` WHERE `MaAlbum` = ".$id."";
+        echo $sql;
+        die();
+        if ($conn->query($sql) === TRUE) {
+
+        } else {
+      }
+      $conn->close();
+
+
+    }
 
           
 ?>

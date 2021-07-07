@@ -45,89 +45,127 @@
             return "";
         }
         function onload() {
+            rollinfo();
+            visualrow();
+            loadalbum();
+            refresh();
+            rolldata();
+            logout();
+            search();
+            deletealbum();
+
+        }
+        function logout() {
+            $("#logout").click(function () {
+                window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/login.html";
+            });
+        }
+        function loadalbum(keyword = "") {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var listsearchResult = JSON.parse(this.responseText);
+                    var length = listsearchResult.length;
+                    var i = 0;
+                    $("tbody tr").each(function () {
+                        if (i < length) {
+                            //stt
+                            $(this).find("td:nth-child(1)").text(listsearchResult[i].MaAlbum);
+                            //name album
+                            $(this).find("td:nth-child(2)").text(listsearchResult[i].TenAlbum);
+
+                            document.getElementById("dataTable").rows[i + 1].style.display = "table-row";
+                        }
+                        else {
+                            document.getElementById("dataTable").rows[i + 1].style.display = "none";
+
+                        }
+                        i++;
+                    });
+
+                }
+            }
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectalbum&keyword=" + keyword, true);
+            xhttp.send();
+        }
+
+        function rollinfo() {
             var tk = getCookie("tk");
             var avatar = getCookie("ava");
 
             $("#img-profile").attr("src", avatar);
             $("#name-profile").text(tk);
-            search();
-            //select length row table 10 25 50 100
-            $(document).ready(function () {
-                $("select[name='dataTable_length']").change(function () {
-                    visualrow();
-                    var x = $("select[name='dataTable_length']").val();
-                    showlength(x);
-                    search();
-                });
+        }
+        function visualrow() {
+            for (var i = 2; i <= 100; i++) {
+                $("#dataTable tbody").append("<tr>" + $("#dataTable tbody tr:first").html() + "</tr>");
+                document.getElementById("dataTable").rows[i].style.display = "none"
+            }
+        }
+        //add thông tin chuẩn bị update
+        function rolldata() {
+            $("button[title='Edit']").click(function () {
+                var x = $(this).parents("tr").find("td:first").text();
+                $("#albumid").val(x);
+                loadDoc(x);
             });
-            //gọi hàm search keyword
-            $("#searchfor").keyup(function () {
-                search();
-            });
-            //button refersh
+        }
+        function loadDoc(index) {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                var listsearchResult = JSON.parse(this.responseText);
+                $("#albumid").val(listsearchResult[0].MaAlbum);
+                $("#albumname").val(listsearchResult[0].TenAlbum);
+                $("#albumimg").val(listsearchResult[0].LinkHinhAnh);
+            }
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=editalbum&id=" + index, true);
+            xhttp.send();
+        }
+        //refresh
+        function refresh() {
             $("#refresh").click(function () {
                 $("albumid").val("");
                 $("#albumname").val("");
                 $("#albumimg").val("");
 
             });
-            //tạo album
-            $("button[title='Upload']").click(function () {
-                createalbum();
-            });
-
-            $("button[title='Edit']").click(function () {
-                var x = $(this).parents("tr").find("td:first").text();
-                $("#albumid").val(x);
-                loadDoc(x);
-            });
-            $("#logout").click(function () {
-                window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/login.html";
-            });
         }
         function search() {
-            var keyword = document.getElementById("searchfor").value;
-            var row = $("select[name='dataTable_length']").val();
-            if (row == undefined) {
-                row = 2;
-            }
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var listsearchResult = JSON.parse(this.responseText);
-                    var length = listsearchResult.length;
-                    for (var x = 1; x <= row; x++) {
-                        if (x <= length) {
-                            document.getElementById("dataTable").rows[x].style.display = "table-row";
-                            document.getElementById("dataTable").rows[x].cells[0].innerHTML = listsearchResult[x - 1].MaAlbum;
-                            document.getElementById("dataTable").rows[x].cells[1].innerHTML = listsearchResult[x - 1].TenAlbum;
-                        }
-                        else {
-                            document.getElementById("dataTable").rows[x].style.display = "none";
-                        }
+            $("#searchfor").keyup(function () {
+                var keyword = $("#searchfor").val();
+                loadalbum(keyword);
+            });
+
+        }
+        function updatealbum() {
+
+            if (checkvalidalbum()) {
+                var id = $("#albumid").val();
+                var albumname = document.getElementById("albumname").value;
+                var albumimg = document.getElementById("albumimg").value;
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        alert(this.responseText);
                     }
                 }
-            }
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=selectalbum&keyword=" + keyword, true);
-            xhttp.send();
-        }
-        //thêm cột ảo
-        function visualrow() {
-            for (var i = 3; i <= 100; i++) {
-                $("#dataTable tbody").append("<tr>" + $("#dataTable tbody tr:first").html() + "</tr>");
-                document.getElementById("dataTable").rows[i].style.display = "none"
+                xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=updatealbum&id=" + id + "&albumname=" + albumname + "&albumimg=" + albumimg, true);
+                xhttp.send();
             }
         }
-        function showlength(length) {
-            for (var i = 1; i <= 100; i++) {
-                if (i <= length) {
-                    document.getElementById("dataTable").rows[i].style.display = "table-row";
-                }
-                else {
-                    document.getElementById("dataTable").rows[i].style.display = "none";
-                }
+        //kiểm tra ko được để trống thông tin nhập
+        function checkvalidalbum() {
+            var albumname = document.getElementById("albumname").value;
+            var albumimg = document.getElementById("albumimg").value;
+            if (albumname == "") {
+                alert("Vui lòng nhập tên album");
+                return false
             }
-
+            if (albumimg.length > 200) {
+                alert("link quá dài");
+                return false;
+            }
+            return true;
         }
         //thêm album
         function createalbum() {
@@ -144,51 +182,25 @@
                 xhttp.send();
             }
         }
-
-        //load thông tin album chuẩn bị edit
-        function loadDoc(index) {
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function () {
-                var listsearchResult = JSON.parse(this.responseText);
-                $("#albumid").val(listsearchResult[0].MaAlbum);
-                $("#albumname").val(listsearchResult[0].TenAlbum);
-                $("#albumimg").val(listsearchResult[0].LinkHinhAnh);
-            }
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=editalbum&id=" + index, true);
+        //xóa bài album
+        function actiondelete(index) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var message = this.responseText;
+                    alert(message);
+                }
+            };
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=deletealbum&id=" + index, true);
             xhttp.send();
         }
-        function updatealbum() {
-            var id = $("#albumid").val();
-            var albumname = document.getElementById("albumname").value;
-            var albumimg = document.getElementById("albumimg").value;
-            if (checkvalidalbum()) {
-
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function () {
-                    if (this.readyState == 4 && this.status == 200) {
-                        alert(this.responseText);
-                    }
-                }
-                xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=updatealbum&id=" + id + "&albumname=" + albumname + "&albumimg=" + albumimg, true);
-                xhttp.send();
-            }
-            loadDoc(id);
-        }
-
-        //kiểm tra ko được để trống thông tin nhập
-        function checkvalidalbum() {
-            var albumname = document.getElementById("albumname").value;
-            var albumimg = document.getElementById("albumimg").value;
-
-            if (albumname == "") {
-                alert("Vui lòng nhập tên album");
-                return false
-            }
-            if (albumimg.length > 200) {
-                alert("link quá dài");
-                return false;
-            }
-            return true;
+        function deletealbum() {
+            $("button[title='Delete']").click(function () {
+                var index = $(this).parents("tr").find("td:first").text();
+                actiondelete(index);
+                loadalbum();
+            });
         }
 
     </script>
@@ -349,7 +361,8 @@
                             <input class="form-control" type="text" placeholder="Tên Album" id="albumname">
                             <input class="form-control" type="text" placeholder="Link hình ảnh" id="albumimg">
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                data-placement="top" title="Upload"><i class="fa fa-plus"></i></button>
+                                data-placement="top" title="Upload" onclick="createalbum()"><i
+                                    class="fa fa-plus"></i></button>
                             <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip"
                                 data-placement="top" title="Edit"><i class="fa fa-edit"
                                     onclick="updatealbum()"></i></button>
@@ -365,10 +378,10 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Danh sách album</h6>
-                            
+
                         </div>
                         <div class="table-container">
-                            <table class="table table-striped">
+                            <table class="table table-striped" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th width="10%">STT</th>
@@ -393,43 +406,24 @@
                                             <!-- Call to action buttons -->
                                             <ul class="list-inline m-0">
                                                 <li class="list-inline-item">
-                                                    <button class="btn btn-success btn-sm rounded-0"
-                                                        type="button" data-toggle="tooltip" data-placement="top"
-                                                        title="Edit"><i class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-success btn-sm rounded-0" type="button"
+                                                        data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                                            class="fa fa-edit"></i></button>
                                                 </li>
                                                 <li class="list-inline-item">
-                                                    <button class="btn btn-danger btn-sm rounded-0"
-                                                        type="button" data-toggle="tooltip" data-placement="top"
-                                                        title="Delete"><i class="fa fa-trash"></i></button>
+                                                    <button class="btn btn-danger btn-sm rounded-0" type="button"
+                                                        data-toggle="tooltip" data-placement="top" title="Delete"><i
+                                                            class="fa fa-trash"></i></button>
                                                 </li>
                                             </ul>
                                         </td>
                                     </tr>
 
-                                    <!-- Col -->
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Album 1</td>
-                                        <td>
-                                            <!-- Call to action buttons -->
-                                            <ul class="list-inline m-0">
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-success btn-sm rounded-0"
-                                                        type="button" data-toggle="tooltip" data-placement="top"
-                                                        title="Edit"><i class="fa fa-edit"></i></button>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <button class="btn btn-danger btn-sm rounded-0"
-                                                        type="button" data-toggle="tooltip" data-placement="top"
-                                                        title="Delete"><i class="fa fa-trash"></i></button>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                    </tr>
+
 
                                 </tbody>
                             </table>
-                          </div>
+                        </div>
 
                     </div>
                     <!-- /.container-fluid -->
