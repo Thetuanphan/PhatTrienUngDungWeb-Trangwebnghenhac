@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta charset="UTF-8">
 
     <title>Quản lý Nhạc</title>
 
@@ -181,10 +182,10 @@
                 alert("Vui lòng nhập tên bài hát");
                 return false
             }
-            if (singername == "") {
-                alert("Vui lòng nhập tên ca sĩ");
-                return false;
-            }
+            // if (singername == "") {
+            //     alert("Vui lòng nhập tên ca sĩ");
+            //     return false;
+            // }
             if (linksong == "") {
                 alert("Vui lòng nhập link bài hát");
                 return false;
@@ -284,6 +285,16 @@
             }
             xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addsongintoalbum&maalbum="+idalbum+"&mabaihat="+idsong, true);
             xhttp.send();
+        }
+        function showlength(length) {
+            for (var i = 1; i <= 100; i++) {
+                if (i <= length) {
+                    document.getElementById("dataTable").rows[i].style.display = "table-row";
+                }
+                else {
+                    document.getElementById("dataTable").rows[i].style.display = "none";
+                }
+            }
         }
 
     </script>
@@ -466,6 +477,7 @@
                             <h6 class="m-0 font-weight-bold text-primary">Danh sách bài hát</h6>
                         </div>
                         <div class="table-container">
+                            <!--  table table-striped-->
                             <table class="table table-striped" id="dataTable">
                                 <thead>
                                     <tr>

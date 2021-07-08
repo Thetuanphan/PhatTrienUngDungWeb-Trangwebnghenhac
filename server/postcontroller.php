@@ -223,9 +223,14 @@
         $linksong = $_GET['linksong'];
         $linksong = getdirectlink($linksong);
         $linkimage = $_GET['linkimage'];
+        $linkimage = getdirectlink($linkimage);
+
         if($linkimage ==""){
             $linkimage ="https://img.lovepik.com/element/40131/7988.png_860.png";
         }
+
+        header('Content-Type: text/html; charset=utf-8');
+
         $servername = "localhost";
         $username = "root";
         $password = "";
@@ -233,14 +238,14 @@
 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
+        $conn->set_charset('utf8');
         // Check connection
         if ($conn->connect_error) {
          die("Connection failed: " . $conn->connect_error);
             }
         //INSERT INTO `baihat`(`MaBaiHat`, `TenBaiHat`, `TenCaSi`, `LinkBaiHat`) VALUES ('[value-1]','[value-2]','[value-3]','[value-4]')
         $sql = 'INSERT INTO `baihat`(`TenBaiHat`, `TenCaSi`, `LinkBaiHat`,`HinhAnh`) VALUES ("'.$songname.'","'.$singername.'","'.$linksong.'","'.$linkimage.'")'; 
-        echo $sql;
-        die();
+      
         if ($conn->query($sql) === TRUE) {
              echo "1";
         } else {
@@ -284,9 +289,12 @@
         $username = "root";
         $password = "";
         $dbname = "wednhac";
+        header('Content-Type: text/html; charset=utf-8');
 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
+        $conn->set_charset('utf8');
+
         // Check connection
         if ($conn->connect_error) {
          die("Connection failed: " . $conn->connect_error);
@@ -297,13 +305,14 @@
          $linksong = $_GET['linksong'];
          $linksong = getdirectlink($linksong);
          $linkimage = $_GET['linkimage'];
+         $linkimage = getdirectlink($linkimage);
+
          if($linkimage ==""){
              $linkimage ="https://img.lovepik.com/element/40131/7988.png_860.png";
          }
 
         $sql = "UPDATE `baihat` SET `TenBaiHat`='".$songname."',`TenCaSi`='".$singername."',`LinkBaiHat`='".$linksong."',`HinhAnh`='".$linkimage."' WHERE `MaBaiHat` =".$id."";
-        echo $sql;
-        die();
+        
         if ($conn->query($sql) === TRUE) {         
             echo "bài hát ".$id." update thành công";
           } else {
@@ -322,6 +331,8 @@
         $mabaihat = $_GET['mabaihat'];
         $maalbum = $_GET['maalbum'];
 
+        header('Content-Type: text/html; charset=utf-8');
+
         $servername = "localhost";
         $username = "root";
         $password = "";
@@ -329,14 +340,14 @@
 
         // Create connection
         $conn = new mysqli($servername, $username, $password, $dbname);
+        $conn->set_charset('utf8');
         // Check connection
         if ($conn->connect_error) {
          die("Connection failed: " . $conn->connect_error);
             }
 
         $sql = "INSERT INTO `ct_baihatalbum`(`MaAlbum`, `MaBaiHat`) VALUES ('".$maalbum."','".$mabaihat."')";
-        echo $sql;
-        die();
+        
 
         if ($conn->query($sql) === TRUE) {
              echo "thêm thành công";
