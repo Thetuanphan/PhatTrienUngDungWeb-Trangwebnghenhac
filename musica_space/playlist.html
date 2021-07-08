@@ -75,9 +75,10 @@
 					if (i < length) {
 						$(this).attr("src", listsearchResult[i].LinkHinhAnh);
 						$(this).next().text(listsearchResult[i].TenAlbum);
-
+						$(this).parents("#country").addClass(listsearchResult[i].QuocGia);
 						var idalbum = link + "?id="+listsearchResult[i].MaAlbum;
 						$(this).parent().attr("href", idalbum);
+
 						i++;
 					}
 				});
@@ -149,7 +150,7 @@
 			<div class="clearfix"></div>
 			<div class="row playlist-area">
 
-				<div class="mix col-lg-3 col-md-4 col-sm-6 vietnam">
+				<div class="mix col-lg-3 col-md-4 col-sm-6" id="country">
 					<div class="playlist-item">
 						<a href="./in-playlist.html">
 							<img src="./img/playlist/1.jpg" alt="" class="img-fluid">
@@ -157,11 +158,9 @@
 						</a>
 					</div>
 				</div>
-	
-			
-
 
 			</div>
+			
 		</div>
 	</section>
 	<!-- Playlist section end -->

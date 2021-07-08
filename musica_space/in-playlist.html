@@ -58,15 +58,6 @@
 				$(".last-li a").text("welcome linh");
 			}
 		}
-		//load ds bài hát của album
-		// function loadsong() {
-		// 	const xhttp = new XMLHttpRequest();
-		// 	xhttp.onload = function () {
-
-		// 	}
-		// 	xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=selectsonguser&idalbum=" + idalbum, true);
-		// 	xhttp.send();
-		// }
 		function loadDoc() {
 			var idalbum = getidalbum();
 			const xhttp = new XMLHttpRequest();
@@ -84,6 +75,7 @@
 				//add nội dung vào item
 				$(".song-item").each(function () {
 					if (i < length) {
+						$(this).find(".song-info-box img").attr("src",listsearchResult[i].HinhAnh);
 						$(this).find(".song-info h4").text(listsearchResult[i].TenBaiHat);
 						$(this).find(".song-info p").text(listsearchResult[i].TenCaSi);
 						//src

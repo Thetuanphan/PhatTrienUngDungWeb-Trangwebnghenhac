@@ -34,33 +34,31 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<script>
-			function login() {
-			// lấy tài khoản mất khẩu
-			var user = document.getElementById("user").value;
-			var pass = document.getElementById("pass").value;
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function () {
+		function login() {
+			var username = $("#user").val();
+			var pass = $("#pass").val();
+			const xhttp = new XMLHttpRequest();
+			xhttp.onload = function () {
 				if (this.readyState == 4 && this.status == 200) {
 					var kq = this.responseText;
 					kq = kq.trim();
 					if (kq == "true") {
-                        resultcheck("login succcess", 1);
+		                resultcheck("login succcess", 1);
 						if (getCookie("chucvu") == 1) {
 							window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/startbootstrap-sb-admin-2-gh-pages/";
 						}
 						if (getCookie("chucvu") == 2) {
-							window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/index.html";
+							window.location.href = "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/index.html";
 						}
 
 					}
 					else { resultcheck("login fail", 0); }
 
 				}
-
 			}
-			//send request
-			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=login&user=" + user + "&pass=" + pass, true);
-			xhttp.send();
+			xhttp.open("POST", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/login.php");
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.send("action=login&username=" + username + "&pass=" + pass + "");
 		}
 
 		function signup() {
@@ -164,7 +162,7 @@
 			}
 			return "";
 		}
-		
+
 	</script>
 </head>
 

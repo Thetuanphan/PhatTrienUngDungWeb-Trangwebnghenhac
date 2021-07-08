@@ -41,7 +41,8 @@
             rolldetail();
             deletesong();
             loaddsalbum();
-            
+            scrolltop();
+
         }
         function rollinfo() {
             var tk = getCookie("tk");
@@ -171,6 +172,7 @@
             document.getElementById("linksong").value = "";
             document.getElementById("linkimage").value = "";
             $("#songid").val("");
+            loadsong();
         }
         //kiểm tra hợp lệ
         function checkvalidsong() {
@@ -283,7 +285,7 @@
             xhttp.onload = function () {
                 alert(this.responseText);
             }
-            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addsongintoalbum&maalbum="+idalbum+"&mabaihat="+idsong, true);
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addsongintoalbum&maalbum=" + idalbum + "&mabaihat=" + idsong, true);
             xhttp.send();
         }
         function showlength(length) {
@@ -296,7 +298,11 @@
                 }
             }
         }
-
+        function scrolltop() {
+            $("button[title='Edit']").click(function () {
+                jQuery('html,body').animate({ scrollTop: 0 }, 500);
+            })
+        }
     </script>
 
 </head>
@@ -572,7 +578,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/musica_space/login.html">Logout</a>
                 </div>
             </div>
         </div>
