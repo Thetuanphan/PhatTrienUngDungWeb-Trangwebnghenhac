@@ -37,6 +37,12 @@
 			checkuser();
 			loadsong();
 			loadsimilarsong();
+			$(".similar-song").click(function(){
+				var id= $(this).attr("id");
+				window.location.href="./Song1.html?"+id;
+
+
+			});
 		}
 		function getCookie(cname) {
 			let name = cname + "=";
@@ -100,6 +106,7 @@
 					}
 					$(this).find("p").text(tencasi);
 					$(this).find("audio").attr("src", result[i].LinkBaiHat);
+					$(this).attr("id",result[i].MaBaiHat);
 					i++;
 				});
 			}
