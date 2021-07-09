@@ -13,7 +13,7 @@
     elseif($action == "signup"){
         signup();
     }
-    //load nội dung của người dùng
+    //
     elseif($action == "select"){
         $ma = $_COOKIE['mand'];
         $stringsql ="SELECT * FROM `album` WHERE `MaNguoiDung` = ".$ma."";

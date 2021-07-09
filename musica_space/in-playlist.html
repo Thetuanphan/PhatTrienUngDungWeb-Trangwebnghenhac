@@ -127,6 +127,7 @@
                 if (this.readyState == 4 && this.status == 200) {
                     var result = JSON.parse(this.responseText);
 					$(".section-title h2").text(result[0].TenAlbum);
+					document.title=result[0].TenAlbum;
                 }
             };
             //send request

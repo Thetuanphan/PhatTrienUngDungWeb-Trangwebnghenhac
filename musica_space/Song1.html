@@ -72,7 +72,6 @@
 
 		function loadsong() {
 			var idsong = getidsong();
-
 			const xhttp = new XMLHttpRequest();
 			xhttp.onload = function () {
 				var result = JSON.parse(this.responseText);
@@ -80,6 +79,9 @@
 				$(".wave-player-info").find("h2").text(result[0].TenBaiHat);
 				$(".wave-player-info").find("p").text(result[0].TenCaSi);
 				$(".wave-player-warp").find("audio").attr("src", result[0].LinkBaiHat);
+				document.title=result[0].TenBaiHat;
+
+				like();
 			}
 			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=detailsong&idsong=" + idsong, true);
 			xhttp.send();
@@ -114,7 +116,25 @@
 			xhttp.send();
 		}
 
-
+		function like(){		
+			$(".player-box").find(".songs-links a:nth-child(1)").click(function () {
+				var mand = getCookie("mand");
+				var idsong = getidsong();
+				addintomyalbum(mand,idsong);
+			});
+		}
+		function addintomyalbum(mand,idsong){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var message = this.responseText;
+                   alert(message);
+                }
+            };
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=addintomyalbum&mand="+mand+"&idsong="+idsong, true);
+            xhttp.send();
+		}
 
 	</script>
 </head>
@@ -163,9 +183,9 @@
 					</div>
 					<div class="col-lg-4">
 						<div class="songs-links">
-							<a href=""><img src="img/icons/p-1.png" alt=""></a>
-							<a href=""><img src="img/icons/p-2.png" alt=""></a>
-							<a href=""><img src="img/icons/p-3.png" alt=""></a>
+							<a><img src="img/icons/p-1.png" alt=""></a>
+							<a><img src="img/icons/p-2.png" alt=""></a>
+							<a><img src="img/icons/p-3.png" alt=""></a>
 						</div>
 					</div>
 				</div>

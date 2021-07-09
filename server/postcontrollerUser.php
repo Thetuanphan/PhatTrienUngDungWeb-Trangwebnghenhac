@@ -6,7 +6,7 @@ $action = $_GET["action"];
 
 if($action == "selectalbumuser"){
    // $mand = $_COOKIE['mand'];
-   $stringsql ="SELECT * FROM `album` WHERE `MaAlbum` in (SELECT MaAlbum From albumyeuthich Where MaNguoiDung = 1)";
+   $stringsql ="SELECT * FROM `album` ";
     select( $stringsql);
 }
 elseif($action=="selectsonguser"){
@@ -60,19 +60,19 @@ elseif($action=="gettile"){
 }
 elseif($action=="sumalbum"){
     $stringsql="SELECT COUNT(*) as TongSoAlbum FROM `album`";
-   select($stringsql);
+    select($stringsql);
 }
 elseif($action=="sumsong"){
   $stringsql="SELECT COUNT(*) as TongSoBaiHat FROM `baihat`";
- select($stringsql);
+  select($stringsql);
 }
 elseif($action=="sumuser"){
   $stringsql="SELECT COUNT(*) as TongSoNguoiDung FROM `nguoidung`";
- select($stringsql);
+  select($stringsql);
 }
 elseif($action=="sumlike"){
   $stringsql="SELECT COUNT(*) as TongLuotThich FROM `baihatyeuthich`";
- select($stringsql);
+  select($stringsql);
 }
 //function
     function deletelikesong(){
