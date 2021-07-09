@@ -85,7 +85,9 @@
                             //stt
                             $(this).find("td:nth-child(1)").text(listsearchResult[i].MaBaiHat);
                             //name song
-                            $(this).find("td:nth-child(2)").text(listsearchResult[i].TenBaiHat);
+                            $(this).find("td:nth-child(2) a").text(listsearchResult[i].TenBaiHat);
+                            //link bài hát
+                            $(this).find("td:nth-child(2) a").attr("href","../musica_space/Song1.html?"+listsearchResult[i].MaBaiHat);
                             //name singer
                             $(this).find("td:nth-child(3)").text(listsearchResult[i].TenCaSi);
 
@@ -504,7 +506,7 @@
                                 <tbody>
                                     <tr>
                                         <td>John</td>
-                                        <td>Doe</td>
+                                        <td><a>Doe</a></td>
                                         <td>john@example.com</td>
                                         <td>
                                             <!-- Call to action buttons -->

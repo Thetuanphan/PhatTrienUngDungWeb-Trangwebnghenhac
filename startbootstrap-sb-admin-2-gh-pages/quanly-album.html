@@ -61,6 +61,7 @@
             });
         }
         function loadalbum(keyword = "") {
+            
             const xhttp = new XMLHttpRequest();
             xhttp.onload = function () {
                 if (this.readyState == 4 && this.status == 200) {
@@ -72,7 +73,10 @@
                             //stt
                             $(this).find("td:nth-child(1)").text(listsearchResult[i].MaAlbum);
                             //name album
-                            $(this).find("td:nth-child(2)").text(listsearchResult[i].TenAlbum);
+                            $(this).find("td:nth-child(2) a").text(listsearchResult[i].TenAlbum);
+                            //link album
+                            $(this).find("td:nth-child(2) a").attr("href","../musica_space/in-playlist.html?id="+listsearchResult[i].MaAlbum);
+
 
                             document.getElementById("dataTable").rows[i + 1].style.display = "table-row";
                         }
@@ -401,7 +405,7 @@
                                     <!-- Col -->
                                     <tr>
                                         <td>1</td>
-                                        <td>Album 1</td>
+                                        <td><a>Album 1</a></td>
                                         <td>
                                             <!-- Call to action buttons -->
                                             <ul class="list-inline m-0">

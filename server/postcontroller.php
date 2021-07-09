@@ -1,5 +1,5 @@
 <?php 
-   error_reporting(0);
+  // error_reporting(0);
 ?> 
 
 <?php
@@ -150,7 +150,7 @@
        
         //http://localhost/Music-Media-Website/server/postcontroller.php?action=search
         if ($result->num_rows > 0) {
-            $data = $result->fetch_all(MYSQLI_ASSOC); 
+            $data = $result->fetch_all(MYSQLI_ASSOC);
             echo json_encode($data,JSON_UNESCAPED_UNICODE);
         }
          else {
@@ -380,9 +380,7 @@
          //http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontroller.php?action=addalbum&tenalbum=1&linkanh=1&manguoidung=1
         //INSERT INTO `album`( `TenAlbum`, `LinkHinhAnh`, `ChuDe`) VALUES ('[value-1]','[value-2]','[value-3]')
         $sql = "INSERT INTO `album`( `TenAlbum`, `LinkHinhAnh`, `ChuDe`) VALUES ('".$tenalbum."','".$linkanh."','".$manguoidung."')";
-        echo $sql;
-        die();
-
+      
         if ($conn->query($sql) === TRUE) {
              echo "1";
         } else {
@@ -412,8 +410,7 @@
          $albumimg = $_GET['albumimg'];
 
          $sql = "UPDATE `album` SET`TenAlbum`='".$albumname."',`LinkHinhAnh`='".$albumimg."' WHERE `MaAlbum` = ".$id."";
-        echo $sql;
-        die();
+        
         
         if ($conn->query($sql) === TRUE) {         
             echo "bài hát ".$id." update thành công";
@@ -441,8 +438,7 @@
         
         // sql to delete a record
         $sql = "SELECT * FROM `album` WHERE `MaAlbum` = ".$id."";
-        echo $sql;
-        die();
+        
         if ($conn->query($sql) === TRUE) {
 
         } else {

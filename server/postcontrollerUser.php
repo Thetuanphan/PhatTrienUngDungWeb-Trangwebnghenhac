@@ -53,6 +53,27 @@ elseif($action=="addintomyalbum"){
 elseif($action=="addmyalbum"){
     addmyalbum();
 }
+elseif($action=="gettile"){
+  $idalbum = $_GET["idalbum"];
+    $stringsql="SELECT `MaAlbum`, `TenAlbum`, `LinkHinhAnh`, `ChuDe`, `QuocGia` FROM `album` WHERE `MaAlbum`=".$idalbum."";
+    select($stringsql);
+}
+elseif($action=="sumalbum"){
+    $stringsql="SELECT COUNT(*) as TongSoAlbum FROM `album`";
+   select($stringsql);
+}
+elseif($action=="sumsong"){
+  $stringsql="SELECT COUNT(*) as TongSoBaiHat FROM `baihat`";
+ select($stringsql);
+}
+elseif($action=="sumuser"){
+  $stringsql="SELECT COUNT(*) as TongSoNguoiDung FROM `nguoidung`";
+ select($stringsql);
+}
+elseif($action=="sumlike"){
+  $stringsql="SELECT COUNT(*) as TongLuotThich FROM `baihatyeuthich`";
+ select($stringsql);
+}
 //function
     function deletelikesong(){
         $idsong = $_GET['idsong'];
@@ -188,5 +209,6 @@ elseif($action=="addmyalbum"){
       $conn->close();
 
     }
+
     
 ?>
