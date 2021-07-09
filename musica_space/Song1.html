@@ -1,37 +1,118 @@
 <!DOCTYPE html>
 <html lang="zxx">
+
 <head>
 	<title>SolMusic | HTML Template</title>
 	<meta charset="UTF-8">
 	<meta name="description" content="SolMusic HTML Template">
 	<meta name="keywords" content="music, html">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<!-- Favicon -->
-	<link href="./img/logo/MS_64.png" rel="shortcut icon"/>
+	<link href="./img/logo/MS_64.png" rel="shortcut icon" />
 
 	<!-- Google font -->
-	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap" rel="stylesheet">
- 
+	<link
+		href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap"
+		rel="stylesheet">
+
 	<!-- Stylesheets -->
-	<link rel="stylesheet" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
-	<link rel="stylesheet" href="css/slicknav.min.css"/>
-	<link rel="stylesheet" href="css/header.css"/>
-	<link rel="stylesheet" href="css/footer.css"/>
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/owl.carousel.min.css" />
+	<link rel="stylesheet" href="css/slicknav.min.css" />
+	<link rel="stylesheet" href="css/header.css" />
+	<link rel="stylesheet" href="css/footer.css" />
 
 	<!-- Main Stylesheets -->
-	<link rel="stylesheet" href="css/style.css"/>
+	<link rel="stylesheet" href="css/style.css" />
 
 
 	<!--[if lt IE 9]>
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script>
+		function onload() {
+			checkuser();
+			loadsong();
+			loadsimilarsong();
+		}
+		function getCookie(cname) {
+			let name = cname + "=";
+			let decodedCookie = decodeURIComponent(unescape(document.cookie));
+			let ca = decodedCookie.split(';');
+			for (let i = 0; i < ca.length; i++) {
+				let c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
+		function checkuser() {
+			if (getCookie("mand") != "") {
+				$(".last-li a").text("welcome " + getCookie("tk") + "");
+				$(".last-li a").attr("href","../startbootstrap-sb-admin-2-gh-pages/user.html");
+			}
+		}
+		function getidsong() {
+			var idalbum = window.location.href;
+			return idalbum.slice(idalbum.indexOf("?") + 1, idalbum.length);
+		}
 
+		function loadsong() {
+			var idsong = getidsong();
+
+			const xhttp = new XMLHttpRequest();
+			xhttp.onload = function () {
+				var result = JSON.parse(this.responseText);
+				$(".tarck-thumb img").attr("src", result[0].HinhAnh);
+				$(".wave-player-info").find("h2").text(result[0].TenBaiHat);
+				$(".wave-player-info").find("p").text(result[0].TenCaSi);
+				$(".wave-player-warp").find("audio").attr("src", result[0].LinkBaiHat);
+			}
+			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=detailsong&idsong=" + idsong, true);
+			xhttp.send();
+		}
+		function loadsimilarsong() {
+			var idsong = getidsong();
+			var foo = new Array();
+			const xhttp = new XMLHttpRequest();
+			xhttp.onload = function () {
+				var result = JSON.parse(this.responseText);
+				var length = result.length;
+				//push hết các mã bài hát vô mảng
+				for (iresult in result) {
+					foo.push(result[iresult].MaBaiHat);
+				}
+				var i = 0;
+
+				$(".similar-song").each(function () {
+					$(this).find("img").attr("src",result[i].HinhAnh);
+					$(this).find("h4").text(result[i].TenBaiHat);
+					var tencasi = result[i].TenCaSi;
+					if(tencasi==""){
+						tencasi="Artist";
+					}
+					$(this).find("p").text(tencasi);
+					$(this).find("audio").attr("src", result[i].LinkBaiHat);
+					i++;
+				});
+			}
+			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=similarsong&idsong="+idsong, true);
+			xhttp.send();
+		}
+
+
+
+	</script>
 </head>
-<body>
+
+<body onload="onload()">
 	<!-- Page Preloder -->
 	<div id="preloder">
 		<div class="loader"></div>
@@ -40,21 +121,21 @@
 	<!-- Header section -->
 	<div class="wrapper fixed-top">
 		<header>
-		   <nav>
-			  <div class="menu-icon">
-				 <i class="fa fa-bars fa-2x"></i>
-			  </div>
-			  <div class="menu">
-				 <ul>
-					<li class="first-li"><a href="../index.html">Home</a></li>
-					<li><a href="./playlist.html">Playlist</a></li>
-					<li><a href="./contact.html">Contact</a></li>
-					<li class="last-li"><a href="./login.html">Login</a></li>
-				 </ul>
-			  </div>
-		   </nav>
+			<nav>
+				<div class="menu-icon">
+					<i class="fa fa-bars fa-2x"></i>
+				</div>
+				<div class="menu">
+					<ul>
+						<li class="first-li"><a href="../index.html">Home</a></li>
+						<li><a href="./playlist.html">Playlist</a></li>
+						<li><a href="./contact.html">Contact</a></li>
+						<li class="last-li"><a href="./login.html">Login</a></li>
+					</ul>
+				</div>
+			</nav>
 		</header>
-	 </div>
+	</div>
 	<!-- Header section end -->
 
 	<!-- Player section -->
@@ -83,10 +164,10 @@
 				</div>
 				<div class="single-container">
 					<audio controls>
-						
-						<source src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU" type="audio/mpeg">
-					  
-					  </audio>
+
+						<source src="" type="audio/mpeg">
+
+					</audio>
 				</div>
 			</div>
 		</div>
@@ -95,7 +176,7 @@
 
 	<!-- Songs details section -->
 	<!-- Songs details section -->
-	
+
 	<!-- Similar Songs section -->
 	<section class="similar-songs-section">
 		<div class="container-fluid">
@@ -108,10 +189,12 @@
 						<p>One Night in Ibiza</p>
 						<div class="single-container">
 							<audio controls>
-								
-								<source src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU" type="audio/mpeg">
-							  
-							  </audio>
+
+								<source
+									src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU"
+									type="audio/mpeg">
+
+							</audio>
 						</div>
 					</div>
 				</div>
@@ -122,10 +205,12 @@
 						<p>One Night in Ibiza</p>
 						<div class="single-container">
 							<audio controls>
-								
-								<source src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU" type="audio/mpeg">
-							  
-							  </audio>
+
+								<source
+									src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU"
+									type="audio/mpeg">
+
+							</audio>
 						</div>
 					</div>
 				</div>
@@ -136,10 +221,12 @@
 						<p>One Night in Ibiza</p>
 						<div class="single-container">
 							<audio controls>
-								
-								<source src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU" type="audio/mpeg">
-							  
-							  </audio>
+
+								<source
+									src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU"
+									type="audio/mpeg">
+
+							</audio>
 						</div>
 					</div>
 				</div>
@@ -150,10 +237,12 @@
 						<p>One Night in Ibiza</p>
 						<div class="single-container">
 							<audio controls>
-								
-								<source src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU" type="audio/mpeg">
-							  
-							  </audio>
+
+								<source
+									src="https://drive.google.com/uc?export=download&id=14S_ccsnvxA0-uMUGbcLMJ9C6-VocOqEU"
+									type="audio/mpeg">
+
+							</audio>
 						</div>
 					</div>
 				</div>
@@ -164,12 +253,12 @@
 
 	<!-- Footer section -->
 	<footer class="footer-section sticky-bottom">
-		<div  class="container content-center scale-1-2">
-					<img src="./img/logo/MS.png" alt="" id="">
+		<div class="container content-center scale-1-2">
+			<img src="./img/logo/MS.png" alt="" id="">
 		</div>
 	</footer>
 	<!-- Footer section end -->
-	
+
 	<!--====== Javascripts & Jquery ======-->
 	<script src="js/jquery-3.2.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
@@ -187,5 +276,6 @@
 	<script src="js/WaveSurferInit.js"></script>
 	<script src="js/jplayerInit.js"></script>
 
-	</body>
+</body>
+
 </html>

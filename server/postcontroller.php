@@ -83,7 +83,7 @@
     elseif($action =="deletealbum"){
         deletealbum();
     }
-
+  
     //funtion---------------------------------------------------------------------------------------------------------------------------
     //funtion login ajax
     function login(){

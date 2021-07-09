@@ -35,7 +35,7 @@
 		}
 		function getCookie(cname) {
 			let name = cname + "=";
-			let decodedCookie = decodeURIComponent(document.cookie);
+			let decodedCookie = decodeURIComponent(unescape(document.cookie));
 			let ca = decodedCookie.split(';');
 			for (let i = 0; i < ca.length; i++) {
 				let c = ca[i];
@@ -50,7 +50,8 @@
 		}
 		function checkuser() {
 			if (getCookie("mand") != "") {
-				$(".last-li a").text("welcome linh");
+				$(".last-li a").text("welcome "+getCookie("tk")+"");
+				$(".last-li a").attr("href","../startbootstrap-sb-admin-2-gh-pages/user.html");
 			}
 		}
 	</script>

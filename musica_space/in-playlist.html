@@ -36,11 +36,11 @@
 		function onload() {
 			checkuser();
 			loadDoc();
-
+			
 		}
 		function getCookie(cname) {
 			let name = cname + "=";
-			let decodedCookie = decodeURIComponent(document.cookie);
+			let decodedCookie = decodeURIComponent(unescape(document.cookie));
 			let ca = decodedCookie.split(';');
 			for (let i = 0; i < ca.length; i++) {
 				let c = ca[i];
@@ -55,7 +55,8 @@
 		}
 		function checkuser() {
 			if (getCookie("mand") != "") {
-				$(".last-li a").text("welcome linh");
+				$(".last-li a").text("welcome " + getCookie("tk") + "");
+				$(".last-li a").attr("href", "../startbootstrap-sb-admin-2-gh-pages/user.html");
 			}
 		}
 		function loadDoc() {
@@ -73,24 +74,52 @@
 				}
 
 				//add nội dung vào item
+				var idsong = $(".song-info-box a").attr("href");
 				$(".song-item").each(function () {
 					if (i < length) {
-						$(this).find(".song-info-box img").attr("src",listsearchResult[i].HinhAnh);
+						$(this).find(".song-info-box img").attr("src", listsearchResult[i].HinhAnh);
 						$(this).find(".song-info h4").text(listsearchResult[i].TenBaiHat);
 						$(this).find(".song-info p").text(listsearchResult[i].TenCaSi);
 						//src
 						$(this).find("audio").attr("src", listsearchResult[i].LinkBaiHat);
+						$(this).find(".song-info-box a").attr("href", idsong + "?" + listsearchResult[i].MaBaiHat);
+						$(this).attr("id", "song-" + listsearchResult[i].MaBaiHat);
+
 						i++;
 					}
 				});
+				like();
 			}
 			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=selectsonguser&idalbum=" + idalbum, true);
 			xhttp.send();
+
+			
 		}
 
 		function getidalbum() {
 			var idalbum = window.location.href;
 			return idalbum.slice(-1);
+		}	
+
+		function like(){		
+			$("div.songs-links").find("a:nth-child(1)").click(function () {
+				var mand = getCookie("mand");
+				var idsong = $(this).parents(".song-item").attr("id");
+				idsong = idsong.slice(idsong.indexOf('-') + 1, idsong.length);
+				addintomyalbum(mand,idsong);
+			});
+		}
+		function addintomyalbum(mand,idsong){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var message = this.responseText;
+                   alert(message);
+                }
+            };
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=addintomyalbum&mand="+mand+"&idsong="+idsong, true);
+            xhttp.send();
 		}
 
 	</script>
@@ -162,9 +191,9 @@
 					</div>
 					<div class="col-lg-2">
 						<div class="songs-links">
-							<a href=""><img src="img/icons/p-1.png" alt=""></a>
-							<a href=""><img src="img/icons/p-2.png" alt=""></a>
-							<a href=""><img src="img/icons/p-3.png" alt=""></a>
+							<a><img src="img/icons/p-1.png" alt=""></a>
+							<a><img src="img/icons/p-2.png" alt=""></a>
+							<a><img src="img/icons/p-3.png" alt=""></a>
 						</div>
 					</div>
 				</div>

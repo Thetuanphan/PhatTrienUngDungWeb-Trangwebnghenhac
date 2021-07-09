@@ -39,7 +39,7 @@
 		}
 		function getCookie(cname) {
 			let name = cname + "=";
-			let decodedCookie = decodeURIComponent(document.cookie);
+			let decodedCookie = decodeURIComponent(unescape(document.cookie));
 			let ca = decodedCookie.split(';');
 			for (let i = 0; i < ca.length; i++) {
 				let c = ca[i];
@@ -54,7 +54,8 @@
 		}
 		function checkuser() {
 			if (getCookie("mand") != "") {
-				$(".last-li a").text("welcome linh");
+				$(".last-li a").text("welcome "+getCookie("tk")+"");
+				$(".last-li a").attr("href","../startbootstrap-sb-admin-2-gh-pages/user.html");
 			}
 		}
 		//load ds album
@@ -75,7 +76,7 @@
 					if (i < length) {
 						$(this).attr("src", listsearchResult[i].LinkHinhAnh);
 						$(this).next().text(listsearchResult[i].TenAlbum);
-						$(this).parents("#country").addClass(listsearchResult[i].QuocGia);
+						$(this).parents(".country").addClass(listsearchResult[i].QuocGia);
 						var idalbum = link + "?id="+listsearchResult[i].MaAlbum;
 						$(this).parent().attr("href", idalbum);
 
@@ -150,7 +151,7 @@
 			<div class="clearfix"></div>
 			<div class="row playlist-area">
 
-				<div class="mix col-lg-3 col-md-4 col-sm-6" id="country">
+				<div class="mix col-lg-3 col-md-4 col-sm-6 country">
 					<div class="playlist-item">
 						<a href="./in-playlist.html">
 							<img src="./img/playlist/1.jpg" alt="" class="img-fluid">
