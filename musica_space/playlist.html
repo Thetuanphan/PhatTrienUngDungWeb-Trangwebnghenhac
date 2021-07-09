@@ -54,8 +54,8 @@
 		}
 		function checkuser() {
 			if (getCookie("mand") != "") {
-				$(".last-li a").text("welcome "+getCookie("tk")+"");
-				$(".last-li a").attr("href","../startbootstrap-sb-admin-2-gh-pages/user.html");
+				$(".last-li a").text("welcome " + getCookie("tk") + "");
+				$(".last-li a").attr("href", "../startbootstrap-sb-admin-2-gh-pages/user.html");
 			}
 		}
 		//load ds album
@@ -72,21 +72,41 @@
 				}
 				//thêm thông tin vào album
 				var link = $(".playlist-item a").attr("href");
-				$(".playlist-area div a img").each(function () {
+				$(".playlist-area div #item img").each(function () {
 					if (i < length) {
 						$(this).attr("src", listsearchResult[i].LinkHinhAnh);
 						$(this).next().text(listsearchResult[i].TenAlbum);
 						$(this).parents(".country").addClass(listsearchResult[i].QuocGia);
-						var idalbum = link + "?id="+listsearchResult[i].MaAlbum;
+						var idalbum = link + "?id=" + listsearchResult[i].MaAlbum;
 						$(this).parent().attr("href", idalbum);
-
+						$(this).parents(".playlist-item").attr("id","album-"+listsearchResult[i].MaAlbum);
 						i++;
 					}
 				});
-
+				like();
 			}
 			xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=selectalbumuser", true);
 			xhttp.send();
+		}
+		function like(){		
+			$(".playlist-item").find(".songs-links a:nth-child(1)").click(function () {
+				var mand = getCookie("mand");
+				var idalbum = $(this).parents(".playlist-item").attr("id");
+				idalbum = idalbum.slice(idalbum.indexOf('-') + 1, idalbum.length);
+				addmyalbum(mand,idalbum)
+			});
+		}
+		function addmyalbum(mand,idalbum){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var message = this.responseText;
+                   alert(message);
+                }
+            };
+            //send request
+            xhttp.open("GET", "http://localhost/PhatTrienUngDungWeb-Trangwebnghenhac/server/postcontrollerUser.php?action=addmyalbum&mand="+mand+"&idalbum="+idalbum, true);
+            xhttp.send();
 		}
 	</script>
 </head>
@@ -153,15 +173,22 @@
 
 				<div class="mix col-lg-3 col-md-4 col-sm-6 country">
 					<div class="playlist-item">
-						<a href="./in-playlist.html">
+						<a href="./in-playlist.html" id="item">
 							<img src="./img/playlist/1.jpg" alt="" class="img-fluid">
 							<h5>V-Pop Plus</h5>
 						</a>
+
+						<div class="songs-links">
+							<a><img src="img/icons/p-1.png" alt=""></a>
+							<a><img src="img/icons/p-2.png" alt=""></a>
+							<a><img src="img/icons/p-3.png" alt=""></a>
+						</div>
+
 					</div>
 				</div>
 
 			</div>
-			
+
 		</div>
 	</section>
 	<!-- Playlist section end -->

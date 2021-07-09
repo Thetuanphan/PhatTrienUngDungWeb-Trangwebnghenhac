@@ -75,7 +75,9 @@
                             //stt
                             $(this).find("td:nth-child(1)").text(listsearchResult[i].MaBaiHat);
                             //name song
-                            $(this).find("td:nth-child(2)").text(listsearchResult[i].TenBaiHat);
+                            $(this).find("td:nth-child(2) a").text(listsearchResult[i].TenBaiHat);
+                            //linksong
+                            $(this).find("td:nth-child(2) a").attr("href","../musica_space/Song1.html?"+listsearchResult[i].MaBaiHat);
                             //name singer
                             $(this).find("td:nth-child(3)").text(listsearchResult[i].TenCaSi);
 
@@ -104,7 +106,9 @@
                             //stt
                             $(this).find("td:nth-child(1)").text(listsearchResult[i].MaAlbum);
                             //name album
-                            $(this).find("td:nth-child(2)").text(listsearchResult[i].TenAlbum);
+                            $(this).find("td:nth-child(2) a").text(listsearchResult[i].TenAlbum);
+                            //link album 
+                            $(this).find("td:nth-child(2) a").attr("href","../musica_space/in-playlist.html?id="+listsearchResult[i].MaAlbum);
 
                             document.getElementById("tablealbum").rows[i + 1].style.display = "table-row";
                         }
@@ -322,7 +326,7 @@
                                         <!-- Col -->
                                         <tr>
                                             <td>1</td>
-                                            <td>Album 1</td>
+                                            <td><a href="../musica_space/in-playlist.html">Album 1</a></td>
                                             <td>
                                                 <!-- Call to action buttons -->
                                                 <ul class="list-inline m-0">
@@ -371,8 +375,8 @@
                                             <!-- Col -->
                                             <tr>
                                                 <td>1</td>
-                                                <td>Song 1</td>
-                                                <td>Artist 1</td>
+                                                <td><a href="../musica_space/Song1.html">Song 1</a></td>
+                                                <td> Artist 1 </td>
                                                 <td>
                                                     <!-- Call to action buttons -->
                                                     <ul class="list-inline m-0">

@@ -50,6 +50,9 @@ elseif($action =="updatepass")
 elseif($action=="addintomyalbum"){
     addintomyalbum();
 }
+elseif($action=="addmyalbum"){
+    addmyalbum();
+}
 //function
     function deletelikesong(){
         $idsong = $_GET['idsong'];
@@ -152,6 +155,33 @@ elseif($action=="addintomyalbum"){
      
         if ($conn->query($sql) === TRUE) {
             echo "thêm bài hát thành công";
+
+        } else {
+      }
+      $conn->close();
+
+    }
+    function addmyalbum(){
+        $mand = $_GET["mand"];
+        $idalbum = $_GET["idalbum"];
+
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "wednhac";
+        
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+        // Check connection
+        if ($conn->connect_error) {
+          die("Connection failed: " . $conn->connect_error);
+        }
+        
+        // 
+        $sql = "INSERT INTO `albumyeuthich`(`MaNguoiDung`, `MaAlbum`) VALUES (".$mand.",".$idalbum.")";
+       
+        if ($conn->query($sql) === TRUE) {
+            echo "thêm bài album thành công";
 
         } else {
       }
