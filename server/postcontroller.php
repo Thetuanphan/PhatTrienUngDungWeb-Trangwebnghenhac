@@ -423,7 +423,7 @@
     //delete album
     function deletealbum(){
         $id = $_GET['id'];
-
+        
         $servername = "localhost";
         $username = "root";
         $password = "";
@@ -437,11 +437,12 @@
         }
         
         // sql to delete a record
-        $sql = "SELECT * FROM `album` WHERE `MaAlbum` = ".$id."";
+        $sql = "DELETE FROM `album` WHERE `MaAlbum` = ".$id."";
         
         if ($conn->query($sql) === TRUE) {
-
+            echo "1";
         } else {
+            echo "0";
       }
       $conn->close();
 

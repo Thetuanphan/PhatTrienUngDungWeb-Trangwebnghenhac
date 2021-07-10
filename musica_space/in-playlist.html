@@ -56,7 +56,10 @@
 		function checkuser() {
 			if (getCookie("mand") != "") {
 				$(".last-li a").text("welcome " + getCookie("tk") + "");
-				$(".last-li a").attr("href", "../startbootstrap-sb-admin-2-gh-pages/user.html");
+				if(getCookie("chucvu")=="2")
+				$(".last-li a").attr("href","../startbootstrap-sb-admin-2-gh-pages/user.html");
+				if(getCookie("chucvu")=="1")
+				$(".last-li a").attr("href","../startbootstrap-sb-admin-2-gh-pages/index.html");	
 			}
 		}
 		function loadDoc() {
@@ -177,7 +180,7 @@
 	<section class="songs-section">
 		<div class="container" id="containersong">
 			<!-- song -->
-			<div class="song-item">
+			<div class="song-item" style="display:none;">
 				<div class="row">
 					<div class="col-lg-4">
 						<div class="song-info-box">

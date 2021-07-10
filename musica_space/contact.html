@@ -50,8 +50,11 @@
 		}
 		function checkuser() {
 			if (getCookie("mand") != "") {
-				$(".last-li a").text("welcome "+getCookie("tk")+"");
+				$(".last-li a").text("welcome " + getCookie("tk") + "");
+				if(getCookie("chucvu")=="2")
 				$(".last-li a").attr("href","../startbootstrap-sb-admin-2-gh-pages/user.html");
+				if(getCookie("chucvu")=="1")
+				$(".last-li a").attr("href","../startbootstrap-sb-admin-2-gh-pages/index.html");	
 			}
 		}
 	</script>

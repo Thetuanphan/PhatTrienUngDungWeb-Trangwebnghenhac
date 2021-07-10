@@ -8,7 +8,7 @@ $action = $_GET["action"];
 
 if($action == "selectalbumuser"){
    // $mand = $_COOKIE['mand'];
-   $stringsql ="SELECT * FROM `album` ";
+   $stringsql ="SELECT * FROM album where `MaAlbum` in( SELECT `MaAlbum` from `albumyeuthich` WHERE `MaNguoiDung` =1)";
     select( $stringsql);
 }
 elseif($action=="selectsonguser"){
