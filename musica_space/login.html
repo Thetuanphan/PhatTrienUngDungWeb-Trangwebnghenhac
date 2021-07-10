@@ -66,12 +66,16 @@
 			if (check()) {
 				var user = document.getElementById("signuser").value;
 				var pass = document.getElementById("signpass").value;
-				var email = document.getElementById("user").value;
+				var email = document.getElementById("email").value;
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function () {
 					if (this.readyState == 4 && this.status == 200) {
 						var kq = this.responseText;
-						resultcheck("signup succcess", 1);
+					
+						if(kq.trim()=="1")
+							resultcheck("signup succcess", 1);
+						else
+							resultcheck("signup fail", 0);
 					}
 				}
 				//send request
@@ -130,7 +134,7 @@
 			xhttp.onreadystatechange = function (ktra) {
 				if (this.readyState == 4 && this.status == 200) {
 					var kq = this.responseText;
-					if (kq == "1") { $('.toast2').toast("show"); }
+					if (kq.trim() == "1") { $('.toast2').toast("show"); }
 				}
 			}
 			//send request

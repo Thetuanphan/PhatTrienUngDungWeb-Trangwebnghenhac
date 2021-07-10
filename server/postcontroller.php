@@ -177,11 +177,12 @@
          die("Connection failed: " . $conn->connect_error);
             }
         //INSERT INTO `nguoidung`( `TaiKhoan`, `MatKhau`, `email`) VALUES ('tuan','1','tuan@gm.com')
-        $sql = "INSERT INTO `nguoidung`( `TaiKhoan`, `MatKhau`, `email`) VALUES ('".$user."','".$pass."','".$email."')";
+        $sql = "INSERT INTO `nguoidung` ( `TaiKhoan`, `MatKhau`, `email`,`MaChucVu`) VALUES ('".$user."','".$pass."','".$email."',2)";
+        
         if ($conn->query($sql) === TRUE) {
-             echo "Đăng ký thành công";
+             echo "1";
         } else {
-            echo "Đăng ký thất bài";
+            echo "0";
         }
 
         $conn->close();
