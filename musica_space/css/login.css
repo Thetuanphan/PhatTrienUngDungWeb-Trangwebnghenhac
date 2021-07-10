@@ -7,7 +7,7 @@ background: radial-gradient(circle, rgba(148,198,242,1) 50%, rgba(107,141,242,1)
 }
 
 .login-box {
-    width: 100%;
+    width: 500px;
     margin: auto;
     max-width: 80%;
     min-height: 670px;
@@ -195,7 +195,6 @@ a {
 }
 
 .card {
-    width: 500px;
     left: 100px;
     border-radius: 10%;
     border: none !important;
@@ -207,7 +206,8 @@ a {
 }
 
 .col-card{
-    margin: 100px auto 100px auto !important;
+    margin: 150px auto 100px auto !important;
     border-radius: 10%;
+    width: 100%;
 }
 
