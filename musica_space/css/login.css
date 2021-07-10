@@ -9,7 +9,7 @@ background: radial-gradient(circle, rgba(148,198,242,1) 50%, rgba(107,141,242,1)
 .login-box {
     width: 100%;
     margin: auto;
-    max-width: 525px;
+    max-width: 80%;
     min-height: 670px;
     position: relative;
     background-color: #6B8DF2;
@@ -198,6 +198,8 @@ a {
     width: 500px;
     left: 100px;
     border-radius: 10%;
+    border: none !important;
+    background-color: transparent;
 }
 
 ::placeholder {

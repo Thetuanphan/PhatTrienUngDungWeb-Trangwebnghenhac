@@ -1013,6 +1013,10 @@ Category page
 	transition: 0.5s;
 }
 
+.single-container{
+	padding-top: 50px;
+}
+
 .single-container audio{
 	width: 100%;
 }
