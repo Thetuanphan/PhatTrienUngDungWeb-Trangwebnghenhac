@@ -1,8 +1,7 @@
-<?php 
-  // error_reporting(0);
-?> 
 
 <?php
+    
+   header("Access-Control-Allow-Origin: *");
 
    $action =  $_GET['action'];
 

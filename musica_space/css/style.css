@@ -105,6 +105,7 @@ Helper CSS
 
 .section-title {
 	margin-bottom: 60px;
+	text-align: center;
 }
 
 .section-title h2 {
@@ -579,6 +580,10 @@ Subscription section
 /* ----------------
 Premium section 
  -------------------*/
+ .premium-section{
+	 padding-top: 0px;
+ }
+
 
 .premium-section p {
 	margin-bottom: 50px;
@@ -989,7 +994,7 @@ Category page
 }
 
 .songs-links {
-	text-align: right;
+	text-align: center;
 	padding-top: 26px;
 }
 

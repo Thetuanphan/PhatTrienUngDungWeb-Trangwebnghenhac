@@ -1,5 +1,7 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+
 include 'postcontroller.php';
 
 $action = $_GET["action"];

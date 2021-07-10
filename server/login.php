@@ -1,5 +1,7 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+
 $action = $_POST['action'];
 if($action == "login"){
     login();
